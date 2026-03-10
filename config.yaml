@@ -278,29 +278,32 @@ targets:
     type: "html"
     tags: ["NCBDDD", "birth-defects", "developmental"]
 
-  - id: "cdc-brfss-disability"
-    url: "https://www.cdc.gov/brfss/data_documentation/index.htm"
+  - id: "cdc-brfss-annual-data"
+    url: "https://www.cdc.gov/brfss/annual_data/annual_data.htm"
     agency: "CDC"
-    name: "CDC BRFSS Data Documentation"
+    name: "CDC BRFSS Annual Survey Data Files"
     frequency: "medium"
     type: "html"
-    tags: ["BRFSS", "surveillance", "statistics"]
+    tags: ["BRFSS", "surveillance", "data-files"]
+    row_count_check: true
 
-  - id: "cdc-nhis-disability"
-    url: "https://www.cdc.gov/nchs/nhis/disability.htm"
+  - id: "cdc-nhis-documentation"
+    url: "https://www.cdc.gov/nchs/nhis/documentation/index.html"
     agency: "CDC"
-    name: "CDC NHIS Disability Data"
+    name: "CDC NHIS Datasets and Documentation Index"
     frequency: "medium"
     type: "html"
-    tags: ["NHIS", "health-interview", "statistics"]
+    tags: ["NHIS", "health-interview", "data-files"]
+    row_count_check: true
 
-  - id: "cdc-soda-disability-datasets"
-    url: "https://data.cdc.gov/api/views/metadata/v1?limit=50&query=disability"
+  # Socrata catalog API — returns JSON array of dataset objects; row_count tracks how many disability datasets exist
+  - id: "cdc-soda-disability-catalog"
+    url: "https://data.cdc.gov/api/views/metadata/v1?limit=100&searchContext=disability"
     agency: "CDC"
-    name: "CDC SODA API Disability Datasets Metadata"
+    name: "CDC Open Data — Disability Dataset Catalog (SODA API)"
     frequency: "high"
     type: "json"
-    tags: ["SODA", "API", "metadata", "datasets"]
+    tags: ["SODA", "API", "catalog", "datasets"]
     row_count_check: true
 
   - id: "cdc-wonder-home"
@@ -346,13 +349,25 @@ targets:
     type: "html"
     tags: ["ACS", "demographics", "overview"]
 
+  # ACS variable list — if B18101 (disability) variables are removed this will show it
   - id: "census-acs-disability-vars"
-    url: "https://api.census.gov/data/2022/acs/acs1/variables.json"
+    url: "https://api.census.gov/data/2023/acs/acs1/variables.json"
     agency: "Census"
-    name: "Census ACS 2022 Variable Definitions"
+    name: "Census ACS 2023 Variable Definitions (includes B18101)"
     frequency: "low"
     type: "json"
     tags: ["ACS", "API", "variables", "B18101"]
+    row_count_check: true
+
+  # ACS B18101 — actual disability count data from the Census API
+  - id: "census-acs-b18101-data"
+    url: "https://api.census.gov/data/2023/acs/acs1?get=NAME,B18101_001E,B18101_002E,B18101_021E,B18101_022E&for=state:*"
+    agency: "Census"
+    name: "Census ACS B18101 Disability Counts by State"
+    frequency: "low"
+    type: "json"
+    tags: ["ACS", "B18101", "disability-count", "states"]
+    row_count_check: true
 
   - id: "census-sipp-disability"
     url: "https://www.census.gov/programs-surveys/sipp/data/datasets.html"
@@ -361,34 +376,16 @@ targets:
     frequency: "medium"
     type: "html"
     tags: ["SIPP", "microdata", "datasets"]
-
-  # disability.census.gov was removed — monitor the redirect/status for documentation
-  - id: "census-disability-portal-redirect"
-    url: "https://www.census.gov/topics/health/disability.html"
-    agency: "Census"
-    name: "Census Disability Topic (was disability.census.gov)"
-    frequency: "medium"
-    type: "html"
-    tags: ["portal", "public-facing", "redirect-watch"]
-
-  # ACS disability data table via Census Data API (table B18101 — disability by sex and age)
-  - id: "census-acs-b18101-api"
-    url: "https://api.census.gov/data/2023/acs/acs1?get=NAME,B18101_001E,B18101_002E,B18101_021E&for=us:1"
-    agency: "Census"
-    name: "Census ACS B18101 Disability by Sex/Age (US)"
-    frequency: "low"
-    type: "json"
-    tags: ["ACS", "API", "B18101", "disability-count"]
     row_count_check: true
 
-  # ACS disability data table via Census Data Explorer (watch page for availability)
-  - id: "census-data-explorer-disability"
+  # ACS Data Explorer — watch for page removal/redirect (was disability.census.gov)
+  - id: "census-data-explorer-b18101"
     url: "https://data.census.gov/table/ACSDT1Y2023.B18101"
     agency: "Census"
     name: "Census Data Explorer — B18101 Disability Table"
     frequency: "medium"
     type: "html"
-    tags: ["ACS", "B18101", "data-explorer"]
+    tags: ["ACS", "B18101", "data-explorer", "redirect-watch"]
 
   # ---------------------------------------------------------------------------
   # NIH / NICHD / NIDILRR
@@ -409,14 +406,25 @@ targets:
     type: "html"
     tags: ["NIDILRR", "research", "rehabilitation"]
 
-  - id: "nih-reporter-disability"
-    url: "https://api.reporter.nih.gov/v2/projects/search"
+  # NIH Reporter API — POST endpoint; we GET the search form page to detect if the API is still accessible.
+  # Actual grant data is retrieved by run.py via POST (see nih_reporter_query in config).
+  # Monitoring this URL detects if the API documentation/endpoint disappears.
+  - id: "nih-reporter-api-docs"
+    url: "https://api.reporter.nih.gov/"
     agency: "NIH"
-    name: "NIH RePORTER Disability Grant Portfolio (API)"
+    name: "NIH RePORTER API Explorer"
     frequency: "low"
-    type: "json"
-    tags: ["grants", "research", "funding"]
-    row_count_check: true
+    type: "html"
+    tags: ["grants", "research", "funding", "API"]
+
+  # NIH Data Sharing — disability research data availability index
+  - id: "nih-nidcd-data"
+    url: "https://www.nidcd.nih.gov/health/statistics/quick-statistics-hearing"
+    agency: "NIH"
+    name: "NIH NIDCD Hearing/Disability Quick Statistics"
+    frequency: "medium"
+    type: "html"
+    tags: ["NIDCD", "hearing", "statistics", "data"]
 
   # ---------------------------------------------------------------------------
   # ACL — Administration for Community Living
@@ -445,6 +453,16 @@ targets:
     type: "html"
     tags: ["NCI", "intellectual-disability", "statistics"]
 
+  # NCI actual data portal at nationalcoreindicators.org
+  - id: "nci-data-portal"
+    url: "https://www.nationalcoreindicators.org/resources/data/"
+    agency: "ACL"
+    name: "National Core Indicators Data Files"
+    frequency: "medium"
+    type: "html"
+    tags: ["NCI", "intellectual-disability", "data-files"]
+    row_count_check: true
+
   - id: "acl-home"
     url: "https://acl.gov/"
     agency: "ACL"
@@ -464,13 +482,34 @@ targets:
     type: "html"
     tags: ["employment", "statistics", "ODEP"]
 
-  - id: "bls-disability-employment"
+  # BLS news release table of contents — lists all published disability employment releases
+  - id: "bls-disability-release-toc"
     url: "https://www.bls.gov/news.release/disabl.toc.htm"
     agency: "BLS"
-    name: "BLS Persons with a Disability: Labor Force Characteristics"
+    name: "BLS Disability Employment News Release (TOC)"
     frequency: "medium"
     type: "html"
     tags: ["employment", "labor-force", "statistics"]
+    row_count_check: true
+
+  # BLS actual data tables embedded in the news release
+  - id: "bls-disability-data-tables"
+    url: "https://www.bls.gov/news.release/disabl.nr0.htm"
+    agency: "BLS"
+    name: "BLS Disability Employment Data Tables"
+    frequency: "medium"
+    type: "html"
+    tags: ["employment", "labor-force", "tables"]
+    row_count_check: true
+
+  # BLS flat-file download server — tab-delimited time series for disability employment
+  - id: "bls-disability-flat-files"
+    url: "https://download.bls.gov/pub/time.series/ln/"
+    agency: "BLS"
+    name: "BLS Labor Force Statistics Flat Files (includes disability series)"
+    frequency: "low"
+    type: "html"
+    tags: ["flat-files", "time-series", "download"]
     row_count_check: true
 
   - id: "askjan-home"
@@ -507,6 +546,17 @@ targets:
     frequency: "medium"
     type: "html"
     tags: ["IDEA", "special-education", "data"]
+    row_count_check: true
+
+  # ED data.ed.gov CKAN API — returns JSON list of IDEA datasets including child count files
+  - id: "ed-ckan-idea-datasets"
+    url: "https://data.ed.gov/api/3/action/package_search?q=disability+IDEA&rows=50"
+    agency: "ED"
+    name: "ED Open Data CKAN API — IDEA/Disability Datasets"
+    frequency: "medium"
+    type: "json"
+    tags: ["IDEA", "CKAN", "API", "datasets"]
+    row_count_check: true
 
   - id: "ed-ocr-data"
     url: "https://ocrdata.ed.gov/"
@@ -515,6 +565,16 @@ targets:
     frequency: "medium"
     type: "html"
     tags: ["OCR", "civil-rights", "data"]
+
+  # CRDC data files landing page — lists downloadable Excel/CSV civil rights data files
+  - id: "ed-crdc-data-files"
+    url: "https://ocrdata.ed.gov/resources/downloaddatafile"
+    agency: "ED"
+    name: "ED CRDC Downloadable Data Files"
+    frequency: "medium"
+    type: "html"
+    tags: ["OCR", "civil-rights", "data-files", "download"]
+    row_count_check: true
 
   - id: "ed-special-ed-childcount"
     url: "https://sites.ed.gov/idea/data/child-count-and-educational-environments/"
@@ -611,13 +671,14 @@ targets:
   # ---------------------------------------------------------------------------
   # data.gov disability datasets
   # ---------------------------------------------------------------------------
-  - id: "datagov-disability-search"
-    url: "https://catalog.data.gov/dataset?q=disability&sort=score+desc%2C+name+asc"
+  # data.gov CKAN API — machine-readable JSON catalog of federal disability datasets
+  - id: "datagov-disability-ckan"
+    url: "https://catalog.data.gov/api/3/action/package_search?q=disability&rows=100&sort=metadata_modified+desc"
     agency: "data.gov"
-    name: "data.gov Disability Dataset Catalog"
+    name: "data.gov CKAN API — Disability Dataset Catalog"
     frequency: "medium"
-    type: "html"
-    tags: ["open-data", "catalog", "metadata"]
+    type: "json"
+    tags: ["open-data", "CKAN", "API", "catalog"]
     row_count_check: true
 
   # ---------------------------------------------------------------------------
@@ -661,11 +722,22 @@ targets:
     type: "html"
     tags: ["Medicaid", "LTSS", "disability"]
 
-  - id: "cms-open-data-disability"
-    url: "https://data.cms.gov/search?keywords=disability"
+  # CMS DKAN API — returns JSON metadata for disability-related datasets
+  - id: "cms-dkan-disability-catalog"
+    url: "https://data.cms.gov/data.json"
     agency: "CMS"
-    name: "CMS Open Data Portal Disability Datasets"
+    name: "CMS Open Data Catalog (data.json)"
+    frequency: "medium"
+    type: "json"
+    tags: ["open-data", "CMS", "catalog", "data.json"]
+    row_count_check: true
+
+  # CMS Medicaid enrollment by disability status — actual data file
+  - id: "cms-medicaid-ltss-data"
+    url: "https://data.cms.gov/summary-statistics-on-beneficiaries/medicare-medicaid-dual-eligibility/medicare-medicaid-dual-eligible-beneficiaries-summary"
+    agency: "CMS"
+    name: "CMS Medicare-Medicaid Dual Eligible Beneficiaries Summary"
     frequency: "medium"
     type: "html"
-    tags: ["open-data", "CMS", "disability"]
+    tags: ["Medicaid", "Medicare", "dual-eligible", "disability"]
     row_count_check: true
