@@ -1,1 +1,129 @@
 change_id,target_id,target_name,target_agency,target_url,detected_at,severity,change_type,pct_text_changed,pct_content_changed,row_count_before,row_count_after,semantic_similarity,semantic_labels,keywords_removed,diff_text_preview,notes
+1,ssa-press-releases,SSA Press Releases,SSA,https://www.ssa.gov/news/press/releases/,2026-03-10T19:36:02.974612+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-10)
+@@ -0,0 +1 @@
++Access Denied Access Denied You don't have permission to access ""http://www.ssa.gov/news/press/releases/"" on this server. Reference #18.2e0ed217.1773171353.85ee53a3 https://errors.edgesuite.net/18.2e0ed217.1773171353.85ee53a3",Major content change: 100.0% text altered
+2,ssa-disability-insurance-stats,SSA SSDI Annual Statistical Report,SSA,https://www.ssa.gov/policy/docs/statcomps/di_asr/,2026-03-10T19:36:02.975623+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-10)
+@@ -0,0 +1 @@
++Access Denied Access Denied You don't have permission to access ""http://www.ssa.gov/policy/docs/statcomps/di_asr/"" on this server. Reference #18.2e0ed217.1773171353.85ee54d9 https://errors.edgesuite.net/18.2e0ed217.1773171353.85ee54d9",Major content change: 100.0% text altered
+3,ssa-ssi-annual-stats,SSA SSI Annual Statistical Report,SSA,https://www.ssa.gov/policy/docs/statcomps/ssi_asr/,2026-03-10T19:36:02.976199+00:00,HIGH,content_major,100.0,0.5,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-10)
+@@ -0,0 +1 @@
++Access Denied Access Denied You don't have permission to access ""http://www.ssa.gov/policy/docs/statcomps/ssi_asr/"" on this server. Reference #18.2e0ed217.1773171353.85ee54ba https://errors.edgesuite.net/18.2e0ed217.1773171353.85ee54ba",Major content change: 100.0% text altered
+4,ssa-policy-pages,SSA Policy Home,SSA,https://www.ssa.gov/policy/,2026-03-10T19:36:02.976728+00:00,HIGH,content_major,100.0,0.5,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-10)
+@@ -0,0 +1 @@
++Access Denied Access Denied You don't have permission to access ""http://www.ssa.gov/policy/"" on this server. Reference #18.80ed217.1773171353.f0331c8e https://errors.edgesuite.net/18.80ed217.1773171353.f0331c8e",Major content change: 100.0% text altered
+5,ssa-disability-benefits,SSA Disability Benefits Main Page,SSA,https://www.ssa.gov/benefits/disability/,2026-03-10T19:36:02.977250+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-10)
+@@ -0,0 +1 @@
++Access Denied Access Denied You don't have permission to access ""http://www.ssa.gov/benefits/disability/"" on this server. Reference #18.80ed217.1773171353.f0331c8f https://errors.edgesuite.net/18.80ed217.1773171353.f0331c8f",Major content change: 100.0% text altered
+6,ssa-rfcs,SSA Disability Evaluation Under SSA,SSA,https://www.ssa.gov/disability/professionals/bluebook/evidentiary.htm,2026-03-10T19:36:02.977739+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-10)
+@@ -0,0 +1 @@
++Access Denied Access Denied You don't have permission to access ""http://www.ssa.gov/disability/professionals/bluebook/evidentiary.htm"" on this server. Reference #18.2e0ed217.1773171353.85ee54ef https://errors.edgesuite.net/18.2e0ed217.1773171353.85ee54ef",Major content change: 100.0% text altered
+7,census-disability-tables,Census Bureau Disability Data Tables,Census,https://www.census.gov/topics/health/disability/data/tables.html,2026-03-10T19:36:02.978589+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-10)
+@@ -0,0 +1 @@
++Disability Data Tables Disability Data Tables Skip Navigation Within Data Disability Data Tables Tables containing disability estimates from the American Community Survey (ACS) are available on data.census.gov . Many Tables available on www.census.gov are downloadable in XLS, CSV, and PDF file formats. Tables available in data.census.gov can be bookmarked/saved, printed and downloaded. The sources of the data published on census.gov a",Major content change: 100.0% text altered
+8,census-disability-topic,Census Bureau Disability Topic Page,Census,https://www.census.gov/topics/health/disability.html,2026-03-10T19:36:02.979157+00:00,HIGH,content_major,100.0,0.1,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-10)
+@@ -0,0 +1 @@
++Disability Disability Skip Navigation Within Disability Disability The Census Bureau collects data on disability primarily through the American Community Survey (ACS) and the Survey of Income and Program Participation (SIPP). Featured Guidance for Disability Data Users Learn about subjects covered by the data and which data tool to use. Find out about handbooks, data users groups, and related topics. Disability Library Online collecti",Major content change: 100.0% text altered
+9,census-acs-disability-vars,Census ACS 2023 Variable Definitions (includes B18101),Census,https://api.census.gov/data/2023/acs/acs1/variables.json,2026-03-10T19:36:02.980786+00:00,HIGH,content_major,100.0,0.5,,1,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-10)
+@@ -0,0 +1,2102 @@
++{
+
++  ""variables"": {
+
++    ""for"": {
+
++      ""label"": ""Census API FIPS 'for' clause"",
+
++      ""concept"": ""Census API Geography Specification"",
+
++      ""predicateType"": ""fips-for"",
+
++      ""group"": ""N/A"",
+
++      ""limit"": 0,
+
++      ""predicateOnly"": true
+
++    },
+
++    ""in"": {
+
++      ""label"": ""Census API FIPS 'in' clause"",
+
++      ""concept"": ""Census API Geography Specification"",
+
++      ""predicateType"": ""fips-in"",
+
++      ""group"":",Major content change: 100.0% text altered
+10,census-sipp-disability,Census SIPP Datasets,Census,https://www.census.gov/programs-surveys/sipp/data/datasets.html,2026-03-10T19:36:02.982913+00:00,HIGH,content_major,100.0,0.1,,62,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-10)
+@@ -0,0 +1 @@
++Survey of Income and Program Participation Datasets Survey of Income and Program Participation Datasets Skip Navigation Within Data Survey of Income and Program Participation Datasets Access SIPP data by year (2018-2024) or panel/wave (1984-2014) in the tabbed lists below. For SIPP data related questions, please visit the Contact Us page. 2024 2023 2022 2021 2020 More 2019 2018 2014 2008 2004 2001 1996 1993 1992 1991 1990 1989 1988 19",Major content change: 100.0% text altered
+11,nidilrr-home,NIDILRR Home (via ACL),ACL,https://acl.gov/about-acl/about-national-institute-disability-independent-living-rehabilitation-research,2026-03-10T19:36:02.983522+00:00,CRITICAL,http_error,0.0,0.0,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-10)
+@@ -0,0 +1 @@
++Page Not Found | ACL Administration for Community Living Documents on this website are being reviewed and updated as necessary to comply with President Trump's executive orders. Official websites use .gov A .gov website belongs to an official government organization in the United States. Secure .gov websites use HTTPS A lock ( ) or https:// means you’ve safely connected to the .gov website. Share sensitive information only on official",HTTP 404 — page removed or inaccessible
+12,acl-data-research,ACL Aging and Disability Data and Research,ACL,https://acl.gov/aging-and-disability-in-america/data-and-research,2026-03-10T19:36:04.374065+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-10)
+@@ -0,0 +1 @@
++Data and Research | ACL Administration for Community Living Documents on this website are being reviewed and updated as necessary to comply with President Trump's executive orders. Official websites use .gov A .gov website belongs to an official government organization in the United States. Secure .gov websites use HTTPS A lock ( ) or https:// means you’ve safely connected to the .gov website. Share sensitive information only on offic",Major content change: 100.0% text altered
+13,acl-programs,ACL Programs Directory,ACL,https://acl.gov/programs,2026-03-10T19:36:04.374837+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-10)
+@@ -0,0 +1 @@
++Program and Policy Areas | ACL Administration for Community Living Documents on this website are being reviewed and updated as necessary to comply with President Trump's executive orders. Official websites use .gov A .gov website belongs to an official government organization in the United States. Secure .gov websites use HTTPS A lock ( ) or https:// means you’ve safely connected to the .gov website. Share sensitive information only o",Major content change: 100.0% text altered
+14,acl-nci-data,ACL National Core Indicators,ACL,https://acl.gov/programs/strengthening-aging-and-disability-networks/national-core-indicators,2026-03-10T19:36:04.375575+00:00,CRITICAL,http_error,0.0,0.0,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-10)
+@@ -0,0 +1 @@
++Page Not Found | ACL Administration for Community Living Documents on this website are being reviewed and updated as necessary to comply with President Trump's executive orders. Official websites use .gov A .gov website belongs to an official government organization in the United States. Secure .gov websites use HTTPS A lock ( ) or https:// means you’ve safely connected to the .gov website. Share sensitive information only on official",HTTP 404 — page removed or inaccessible
+15,dol-odep-statistics,DOL ODEP Disability Statistics,DOL,https://www.dol.gov/agencies/odep/research-evaluation/statistics,2026-03-10T19:36:10.894505+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-10)
+@@ -0,0 +1 @@
++Disability Employment Statistics | U.S. Department of Labor Skip to main content",Major content change: 100.0% text altered
+16,askjan-home,Job Accommodation Network Homepage,JAN,https://askjan.org/,2026-03-10T19:36:10.895326+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-10)
+@@ -0,0 +1 @@
++JAN - Job Accommodation Network Skip to main navigation Skip to search Skip to content Open Search Close Search Search the site: Click to Search Contact Open Close Employers Individuals Toolkit A to Z Situations & Solutions Finder MyJAN Publications Training About JAN Search the site: Search Information By Role Toolkit A to Z of Disabilities & Accommodations ADA Library Situations & Solutions Finder MyJAN Publications Training About J",Major content change: 100.0% text altered
+17,askjan-a-to-z,JAN A-to-Z Disability Index,JAN,https://askjan.org/a-to-z.cfm,2026-03-10T19:36:10.896164+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-10)
+@@ -0,0 +1 @@
++A to Z of Disabilities and Accommodations Close Menu Close A to Z of Disabilities and Accommodations home If you are looking for information on job accommodations, the Americans with Disabilities Act or Rehabilitation Act, or topics related to disability employment, see the listings below for various topics covered by JAN. Listen JAN provides the following A to Z listings by disability, topic, and limitation. This information is desig",Major content change: 100.0% text altered
+18,ed-idea-data,IDEA Data Center,ED,https://sites.ed.gov/idea/data/,2026-03-10T19:36:10.896990+00:00,HIGH,content_major,100.0,0.0,,3,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-10)
+@@ -0,0 +1 @@
++Data - Individuals with Disabilities Education Act Skip to content Official websites use .gov A .gov website belongs to an official government organization in the United States. Secure .gov websites use HTTPS A lock ( ) or https:// means you’ve safely connected to the .gov website. Share sensitive information only on official, secure websites. Home » Data A A A The Individuals with Disabilities Education Act (IDEA) requires the U.S. D",Major content change: 100.0% text altered
+19,ed-disability-page,ED Office of Special Education Programs,ED,https://www.ed.gov/about/offices/list/osers/osep/index.html,2026-03-10T19:36:10.897985+00:00,HIGH,gov_redirect,100.0,0.0,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-10)
+@@ -0,0 +1 @@
++Office of Special Education Programs (OSEP) | U.S. Department of Education Skip to main content Official websites use .gov A .gov website belongs to an official government organization in the United States. Secure .gov websites use HTTPS A lock ( ) or https:// means you’ve safely connected to the .gov website. Share sensitive information only on official, secure websites. Office of Special Education Programs (OSEP) The Office of Speci",Page now redirects within .gov: https://www.ed.gov/about/ed-offices/osers/osep
+20,hhs-disability-page,HHS Disability Topic Page,HHS,https://www.hhs.gov/programs/topic-sites/disability/index.html,2026-03-10T19:36:10.899078+00:00,HIGH,content_major,100.0,0.5,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-10)
+@@ -0,0 +1 @@
++Access Denied Access Denied You don't have permission to access ""http://www.hhs.gov/programs/topic-sites/disability/index.html"" on this server. Reference #18.f3a5dc17.1773171361.e8166c77 https://errors.edgesuite.net/18.f3a5dc17.1773171361.e8166c77",Major content change: 100.0% text altered
+21,hhs-section504,HHS Section 504 Civil Rights (Disability),HHS,https://www.hhs.gov/civil-rights/for-individuals/disability/index.html,2026-03-10T19:36:10.899554+00:00,HIGH,content_major,100.0,0.5,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-10)
+@@ -0,0 +1 @@
++Access Denied Access Denied You don't have permission to access ""http://www.hhs.gov/civil-rights/for-individuals/disability/index.html"" on this server. Reference #18.f3a5dc17.1773171361.e8166d23 https://errors.edgesuite.net/18.f3a5dc17.1773171361.e8166d23",Major content change: 100.0% text altered
+22,regulations-disability-open,Regulations.gov Open Disability Rulemakings,Regulations.gov,https://www.regulations.gov/search?filter=disability&status=open,2026-03-10T19:36:10.900037+00:00,HIGH,http_error,100.0,73.1,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-10)
+@@ -0,0 +1 @@
++ERROR: The request could not be satisfied 403 ERROR The request could not be satisfied. Request blocked. We can't connect to the server for this app or website at this time. There might be too much traffic or a configuration error. Try again later, or contact the app or website owner. If you provide content to customers through CloudFront, you can find steps to troubleshoot and help prevent this error by reviewing the CloudFront docum",HTTP status changed: 200 → 403
+23,regulations-ada-rulemakings,Regulations.gov ADA Rulemakings,Regulations.gov,https://www.regulations.gov/search?filter=ADA,2026-03-10T19:36:10.900505+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-10)
+@@ -0,0 +1 @@
++ERROR: The request could not be satisfied 403 ERROR The request could not be satisfied. Request blocked. We can't connect to the server for this app or website at this time. There might be too much traffic or a configuration error. Try again later, or contact the app or website owner. If you provide content to customers through CloudFront, you can find steps to troubleshoot and help prevent this error by reviewing the CloudFront docum",Major content change: 100.0% text altered
+24,regulations-section504,Regulations.gov Section 504 Rulemakings,Regulations.gov,https://www.regulations.gov/search?filter=section+504,2026-03-10T19:36:10.901005+00:00,HIGH,content_major,100.0,73.1,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-10)
+@@ -0,0 +1 @@
++Regulations.gov",Major content change: 100.0% text altered
+25,whitehouse-accessibility,White House Accessibility Page,WhiteHouse,https://www.whitehouse.gov/accessibility/,2026-03-10T19:36:10.901508+00:00,CRITICAL,http_error,0.0,0.0,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-10)
+@@ -0,0 +1 @@
++Page not found – The White House 404 / Page Not Found We couldn’t find that page. Back to home . Search",HTTP 404 — page removed or inaccessible
