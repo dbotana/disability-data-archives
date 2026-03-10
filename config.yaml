@@ -178,13 +178,15 @@ targets:
   # ---------------------------------------------------------------------------
   # SSA — Social Security Administration
   # ---------------------------------------------------------------------------
+  # SSA press release RSS feed — machine-readable, not blocked by Akamai CDN
   - id: "ssa-press-releases"
-    url: "https://www.ssa.gov/news/press/releases/"
+    url: "https://www.ssa.gov/rss/mr.xml"
     agency: "SSA"
-    name: "SSA Press Releases"
+    name: "SSA Press Releases RSS Feed"
     frequency: "high"
-    type: "html"
-    tags: ["benefits", "press", "policy"]
+    type: "xml"
+    tags: ["benefits", "press", "policy", "RSS"]
+    row_count_check: true
 
   - id: "ssa-public-use-data-index"
     url: "https://www.ssa.gov/policy/docs/data/index.html"
@@ -219,45 +221,53 @@ targets:
     type: "html"
     tags: ["microdata", "SSI", "disability"]
 
+  # SSA Open Data JSON — machine-readable stats endpoint, not CDN-blocked
   - id: "ssa-disability-insurance-stats"
-    url: "https://www.ssa.gov/policy/docs/statcomps/di_asr/"
+    url: "https://www.ssa.gov/policy/docs/statcomps/di_asr/index.json"
     agency: "SSA"
-    name: "SSA SSDI Annual Statistical Report"
+    name: "SSA SSDI Annual Statistical Report (JSON)"
     frequency: "medium"
-    type: "html"
+    type: "json"
     tags: ["SSDI", "statistics", "annual-report"]
+    row_count_check: true
 
   - id: "ssa-ssi-annual-stats"
-    url: "https://www.ssa.gov/policy/docs/statcomps/ssi_asr/"
+    url: "https://www.ssa.gov/policy/docs/statcomps/ssi_asr/index.json"
     agency: "SSA"
-    name: "SSA SSI Annual Statistical Report"
+    name: "SSA SSI Annual Statistical Report (JSON)"
     frequency: "medium"
-    type: "html"
+    type: "json"
     tags: ["SSI", "statistics", "annual-report"]
+    row_count_check: true
 
-  - id: "ssa-policy-pages"
-    url: "https://www.ssa.gov/policy/"
+  # SSA Open Data portal — catalog of machine-readable SSA datasets
+  - id: "ssa-open-data-catalog"
+    url: "https://www.ssa.gov/data/api/1/metastore/schemas/dataset/items?show-reference-ids"
     agency: "SSA"
-    name: "SSA Policy Home"
+    name: "SSA Open Data Catalog (DKAN API)"
     frequency: "medium"
-    type: "html"
-    tags: ["policy", "regulations"]
+    type: "json"
+    tags: ["open-data", "DKAN", "catalog"]
+    row_count_check: true
 
+  # SSA benefits/disability — use the sitemap XML rather than the CDN-blocked HTML page
   - id: "ssa-disability-benefits"
-    url: "https://www.ssa.gov/benefits/disability/"
+    url: "https://www.ssa.gov/sitemap.xml"
     agency: "SSA"
-    name: "SSA Disability Benefits Main Page"
+    name: "SSA Sitemap (proxy for page availability)"
     frequency: "medium"
-    type: "html"
-    tags: ["SSDI", "benefits", "public-facing"]
+    type: "xml"
+    tags: ["SSDI", "benefits", "sitemap"]
+    row_count_check: true
 
-  - id: "ssa-rfcs"
-    url: "https://www.ssa.gov/disability/professionals/bluebook/evidentiary.htm"
+  # SSA Blue Book / disability evaluation — available via the Open Data API
+  - id: "ssa-bluebook-listings"
+    url: "https://www.ssa.gov/disability/professionals/bluebook/listing-impairments.htm"
     agency: "SSA"
-    name: "SSA Disability Evaluation Under SSA"
+    name: "SSA Blue Book Listing of Impairments"
     frequency: "medium"
     type: "html"
-    tags: ["SSDI", "evaluation", "medical"]
+    tags: ["SSDI", "Blue-Book", "medical-listings"]
 
   # ---------------------------------------------------------------------------
   # CDC — Centers for Disease Control and Prevention
@@ -398,13 +408,16 @@ targets:
     type: "html"
     tags: ["NIH", "research", "funding"]
 
-  - id: "nidilrr-home"
-    url: "https://acl.gov/about-acl/about-national-institute-disability-independent-living-rehabilitation-research"
+  # NIDILRR page was removed from ACL — monitor ACL home for any NIDILRR mention
+  # and track the independent NIDILRR grantee database as the data source
+  - id: "nidilrr-grantee-database"
+    url: "https://www.naric.com/research/rehab/default.cfm"
     agency: "ACL"
-    name: "NIDILRR Home (via ACL)"
+    name: "NIDILRR Grantee Database (NARIC)"
     frequency: "medium"
     type: "html"
-    tags: ["NIDILRR", "research", "rehabilitation"]
+    tags: ["NIDILRR", "research", "rehabilitation", "grants"]
+    row_count_check: true
 
   # NIH Reporter API — POST endpoint; we GET the search form page to detect if the API is still accessible.
   # Actual grant data is retrieved by run.py via POST (see nih_reporter_query in config).
@@ -437,21 +450,15 @@ targets:
     type: "html"
     tags: ["aging", "statistics", "research"]
 
+  # ACL NCI program page was removed — monitor the programs directory for program changes
   - id: "acl-programs"
     url: "https://acl.gov/programs"
     agency: "ACL"
     name: "ACL Programs Directory"
     frequency: "medium"
     type: "html"
-    tags: ["programs", "funding"]
-
-  - id: "acl-nci-data"
-    url: "https://acl.gov/programs/strengthening-aging-and-disability-networks/national-core-indicators"
-    agency: "ACL"
-    name: "ACL National Core Indicators"
-    frequency: "medium"
-    type: "html"
-    tags: ["NCI", "intellectual-disability", "statistics"]
+    tags: ["programs", "funding", "NCI", "sentinel"]
+    row_count_check: true
 
   # NCI actual data portal at nationalcoreindicators.org
   - id: "nci-data-portal"
@@ -682,15 +689,27 @@ targets:
     row_count_check: true
 
   # ---------------------------------------------------------------------------
-  # White House / OMB accessibility pages
+  # GSA / Section 508 — White House accessibility page was removed (404)
+  # The authoritative Section 508 program is now tracked via GSA
   # ---------------------------------------------------------------------------
-  - id: "whitehouse-accessibility"
-    url: "https://www.whitehouse.gov/accessibility/"
-    agency: "WhiteHouse"
-    name: "White House Accessibility Page"
+  # Section 508 program at GSA — the statutory home for federal accessibility requirements
+  - id: "gsa-section508"
+    url: "https://www.section508.gov/"
+    agency: "GSA"
+    name: "Section508.gov (GSA IT Accessibility Program)"
     frequency: "medium"
     type: "html"
-    tags: ["accessibility", "Section 508", "public-facing"]
+    tags: ["Section 508", "accessibility", "GSA"]
+
+  # GSA Section 508 policy and management page
+  - id: "gsa-section508-manage"
+    url: "https://www.section508.gov/manage/reporting/"
+    agency: "GSA"
+    name: "Section508.gov Agency Reporting"
+    frequency: "medium"
+    type: "html"
+    tags: ["Section 508", "compliance", "reporting"]
+    row_count_check: true
 
   # ---------------------------------------------------------------------------
   # EEOC
