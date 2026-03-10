@@ -50,13 +50,16 @@ load_dotenv()
 # Logging setup (minimal — full structured logging is for the daemon)
 # ---------------------------------------------------------------------------
 
+_LOG_DIR = Path("logs")
+_LOG_DIR.mkdir(parents=True, exist_ok=True)
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
     handlers=[
         logging.StreamHandler(sys.stdout),
-        logging.FileHandler("logs/monitor.log", mode="a", encoding="utf-8"),
+        logging.FileHandler(_LOG_DIR / "monitor.log", mode="a", encoding="utf-8"),
     ],
 )
 # Suppress noisy third-party loggers

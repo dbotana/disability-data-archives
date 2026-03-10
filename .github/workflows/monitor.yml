@@ -91,6 +91,7 @@ jobs:
           # Frequency filter from manual dispatch (default: all)
           MONITOR_FREQUENCY: ${{ github.event.inputs.frequency || 'all' }}
         run: |
+          mkdir -p logs data
           python run.py --github
 
       # ------------------------------------------------------------------
