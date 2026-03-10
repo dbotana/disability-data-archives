@@ -1,1 +1,1 @@
-detected_at,target_id,url,agency,name,severity,change_type,pct_content_changed,pct_text_changed,row_count_before,row_count_after,semantic_similarity,semantic_labels,keywords_removed,keywords_added,diff_preview,wayback_url
+change_id,target_id,target_name,target_agency,target_url,detected_at,severity,change_type,pct_text_changed,pct_content_changed,row_count_before,row_count_after,semantic_similarity,semantic_labels,keywords_removed,diff_text_preview,notes
