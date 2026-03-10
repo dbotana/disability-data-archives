@@ -288,78 +288,88 @@ class GitHubStorageBackend:
 
         This is the correct way to commit multiple files atomically without
         making a separate API call per file.
+
+        If the ref moved between reading HEAD and updating it (race condition with
+        the Actions checkout commit), we retry once on 422 using the updated HEAD
+        as the new parent. Our data is always complete so this is safe.
         """
         async with httpx.AsyncClient(timeout=60) as client:
-            # 1. Get current HEAD SHA
-            ref_url = f"{self._api_base}/repos/{self._repo}/git/refs/heads/{self._branch}"
-            resp = await client.get(ref_url, headers=self._headers())
-            if resp.status_code != 200:
-                logger.error(f"Failed to get HEAD ref: {resp.status_code} {resp.text[:200]}")
-                return False
-            head_sha = resp.json()["object"]["sha"]
+            for attempt in range(2):
+                # 1. Get current HEAD SHA (re-read on retry to get latest)
+                ref_url = f"{self._api_base}/repos/{self._repo}/git/refs/heads/{self._branch}"
+                resp = await client.get(ref_url, headers=self._headers())
+                if resp.status_code != 200:
+                    logger.error(f"Failed to get HEAD ref: {resp.status_code} {resp.text[:200]}")
+                    return False
+                head_sha = resp.json()["object"]["sha"]
 
-            # 2. Get base tree SHA from HEAD commit
-            commit_url = f"{self._api_base}/repos/{self._repo}/git/commits/{head_sha}"
-            resp = await client.get(commit_url, headers=self._headers())
-            if resp.status_code != 200:
-                logger.error(f"Failed to get HEAD commit: {resp.status_code}")
-                return False
-            base_tree_sha = resp.json()["tree"]["sha"]
+                # 2. Get base tree SHA from HEAD commit
+                commit_url = f"{self._api_base}/repos/{self._repo}/git/commits/{head_sha}"
+                resp = await client.get(commit_url, headers=self._headers())
+                if resp.status_code != 200:
+                    logger.error(f"Failed to get HEAD commit: {resp.status_code}")
+                    return False
+                base_tree_sha = resp.json()["tree"]["sha"]
 
-            # 3. Build tree blobs
-            tree_items = []
-            for path, content in files.items():
-                tree_items.append({
-                    "path": path,
-                    "mode": "100644",
-                    "type": "blob",
-                    "content": content,
-                })
+                # 3. Build tree blobs
+                tree_items = [
+                    {"path": path, "mode": "100644", "type": "blob", "content": content}
+                    for path, content in files.items()
+                ]
 
-            # 4. Create new tree
-            tree_url = f"{self._api_base}/repos/{self._repo}/git/trees"
-            resp = await client.post(
-                tree_url,
-                headers=self._headers(),
-                json={"base_tree": base_tree_sha, "tree": tree_items},
-            )
-            if resp.status_code not in (200, 201):
-                logger.error(f"Failed to create tree: {resp.status_code} {resp.text[:200]}")
-                return False
-            new_tree_sha = resp.json()["sha"]
+                # 4. Create new tree
+                tree_url = f"{self._api_base}/repos/{self._repo}/git/trees"
+                resp = await client.post(
+                    tree_url,
+                    headers=self._headers(),
+                    json={"base_tree": base_tree_sha, "tree": tree_items},
+                )
+                if resp.status_code not in (200, 201):
+                    logger.error(f"Failed to create tree: {resp.status_code} {resp.text[:200]}")
+                    return False
+                new_tree_sha = resp.json()["sha"]
 
-            # 5. Create commit
-            commit_create_url = f"{self._api_base}/repos/{self._repo}/git/commits"
-            resp = await client.post(
-                commit_create_url,
-                headers=self._headers(),
-                json={
-                    "message": message,
-                    "tree": new_tree_sha,
-                    "parents": [head_sha],
-                    "author": {
-                        "name": "Disability Data Monitor",
-                        "email": "monitor@noreply.github.com",
-                        "date": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                # 5. Create commit
+                commit_create_url = f"{self._api_base}/repos/{self._repo}/git/commits"
+                resp = await client.post(
+                    commit_create_url,
+                    headers=self._headers(),
+                    json={
+                        "message": message,
+                        "tree": new_tree_sha,
+                        "parents": [head_sha],
+                        "author": {
+                            "name": "Disability Data Monitor",
+                            "email": "monitor@noreply.github.com",
+                            "date": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                        },
                     },
-                },
-            )
-            if resp.status_code not in (200, 201):
-                logger.error(f"Failed to create commit: {resp.status_code} {resp.text[:200]}")
-                return False
-            new_commit_sha = resp.json()["sha"]
+                )
+                if resp.status_code not in (200, 201):
+                    logger.error(f"Failed to create commit: {resp.status_code} {resp.text[:200]}")
+                    return False
+                new_commit_sha = resp.json()["sha"]
 
-            # 6. Update branch ref
-            resp = await client.patch(
-                ref_url,
-                headers=self._headers(),
-                json={"sha": new_commit_sha},
-            )
-            if resp.status_code not in (200, 201):
+                # 6. Update branch ref
+                resp = await client.patch(
+                    ref_url,
+                    headers=self._headers(),
+                    json={"sha": new_commit_sha},
+                )
+                if resp.status_code in (200, 201):
+                    return True
+
+                if resp.status_code == 422 and attempt == 0:
+                    # Ref moved under us — retry once with the fresh HEAD
+                    logger.warning(
+                        "Ref not a fast-forward (422); retrying commit with updated HEAD"
+                    )
+                    continue
+
                 logger.error(f"Failed to update ref: {resp.status_code} {resp.text[:200]}")
                 return False
 
-        return True
+        return False
 
     # ------------------------------------------------------------------
     # Helpers

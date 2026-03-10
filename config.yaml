@@ -186,14 +186,38 @@ targets:
     type: "html"
     tags: ["benefits", "press", "policy"]
 
-  - id: "ssa-open-data-portal"
-    url: "https://data.ssa.gov/browse"
+  - id: "ssa-public-use-data-index"
+    url: "https://www.ssa.gov/policy/docs/data/index.html"
     agency: "SSA"
-    name: "SSA Open Data Portal"
-    frequency: "high"
+    name: "SSA Public-Use Data Files Index"
+    frequency: "medium"
     type: "html"
-    tags: ["open-data", "datasets"]
-    row_count_check: true
+    tags: ["open-data", "microdata", "datasets"]
+    row_count_check: false
+
+  - id: "ssa-bepuf-2020"
+    url: "https://www.ssa.gov/policy/docs/microdata/bepuf-2020/index.html"
+    agency: "SSA"
+    name: "SSA Benefits & Earnings Public-Use File 2020"
+    frequency: "low"
+    type: "html"
+    tags: ["microdata", "OASDI", "earnings", "BEPUF"]
+
+  - id: "ssa-epuf"
+    url: "https://www.ssa.gov/policy/docs/microdata/epuf/index.html"
+    agency: "SSA"
+    name: "SSA Earnings Public-Use File"
+    frequency: "low"
+    type: "html"
+    tags: ["microdata", "earnings", "EPUF"]
+
+  - id: "ssa-ssi-microdata"
+    url: "https://www.ssa.gov/policy/docs/microdata/ssr/index.html"
+    agency: "SSA"
+    name: "SSA SSI Public-Use Microdata File"
+    frequency: "low"
+    type: "html"
+    tags: ["microdata", "SSI", "disability"]
 
   - id: "ssa-disability-insurance-stats"
     url: "https://www.ssa.gov/policy/docs/statcomps/di_asr/"
@@ -338,13 +362,33 @@ targets:
     type: "html"
     tags: ["SIPP", "microdata", "datasets"]
 
-  - id: "disability-census-gov"
-    url: "https://disability.census.gov/"
+  # disability.census.gov was removed — monitor the redirect/status for documentation
+  - id: "census-disability-portal-redirect"
+    url: "https://www.census.gov/topics/health/disability.html"
     agency: "Census"
-    name: "disability.census.gov Portal"
+    name: "Census Disability Topic (was disability.census.gov)"
     frequency: "medium"
     type: "html"
-    tags: ["portal", "public-facing"]
+    tags: ["portal", "public-facing", "redirect-watch"]
+
+  # ACS disability data table via Census Data API (table B18101 — disability by sex and age)
+  - id: "census-acs-b18101-api"
+    url: "https://api.census.gov/data/2023/acs/acs1?get=NAME,B18101_001E,B18101_002E,B18101_021E&for=us:1"
+    agency: "Census"
+    name: "Census ACS B18101 Disability by Sex/Age (US)"
+    frequency: "low"
+    type: "json"
+    tags: ["ACS", "API", "B18101", "disability-count"]
+    row_count_check: true
+
+  # ACS disability data table via Census Data Explorer (watch page for availability)
+  - id: "census-data-explorer-disability"
+    url: "https://data.census.gov/table/ACSDT1Y2023.B18101"
+    agency: "Census"
+    name: "Census Data Explorer — B18101 Disability Table"
+    frequency: "medium"
+    type: "html"
+    tags: ["ACS", "B18101", "data-explorer"]
 
   # ---------------------------------------------------------------------------
   # NIH / NICHD / NIDILRR
