@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Dashboard</h1>
+
+<h2>Last 24 Hours</h2>
+<div class="stat-grid">
+  {% for sev in ["CRITICAL", "HIGH", "MEDIUM", "LOW"] %}
+  <div class="card stat-card stat-{{ sev }}">
+    <div class="num">{{ counts_24h.get(sev, 0) }}</div>
+    <div class="label">{{ sev }}</div>
+  </div>
+  {% endfor %}
+  <div class="card stat-card">
+    <div class="num" style="color:#495057">{{ total_targets }}</div>
+    <div class="label">Targets Monitored</div>
+  </div>
+</div>
+
+<h2>Recent Changes <small class="text-muted">(last 7 days)</small></h2>
+{% if recent_changes %}
+<div class="card" style="padding:0">
+<table>
+  <thead>
+    <tr>
+      <th>Severity</th>
+      <th>Target</th>
+      <th>Agency</th>
+      <th>Type</th>
+      <th>Detected</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for c in recent_changes %}
+    <tr>
+      <td><span class="badge badge-{{ c.severity }}">{{ c.severity }}</span></td>
+      <td class="truncate">{{ c.target_name }}</td>
+      <td>{{ c.agency }}</td>
+      <td><code style="font-size:0.75rem">{{ c.change_type }}</code></td>
+      <td class="text-muted">{{ c.detected_at }}</td>
+      <td><a class="btn btn-sm btn-outline" href="/diff/{{ c.change_id }}">Diff</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+<a href="/changes" class="btn btn-outline">View all changes →</a>
+{% else %}
+<div class="card">
+  <p class="text-muted">No changes detected in the last 7 days.</p>
+</div>
+{% endif %}
+{% endblock %}

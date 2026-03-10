@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+{% endblock %}
+{% block content %}
+<h1>Trends</h1>
+
+<div class="filters">
+  <div>
+    <label>Lookback</label>
+    <select id="daysSelect">
+      <option value="7">7 days</option>
+      <option value="30" selected>30 days</option>
+      <option value="90">90 days</option>
+      <option value="365">1 year</option>
+    </select>
+  </div>
+</div>
+
+<div class="card">
+  <strong>Changes per Day by Severity</strong>
+  <canvas id="timelineChart" height="80"></canvas>
+</div>
+
+<div class="card">
+  <strong>Changes by Agency (top 10)</strong>
+  <canvas id="agencyChart" height="80"></canvas>
+</div>
+
+<script>
+let timelineChart, agencyChart;
+
+const COLORS = {
+  CRITICAL: "rgba(244,67,54,0.85)",
+  HIGH:     "rgba(255,152,0,0.85)",
+  MEDIUM:   "rgba(33,150,243,0.6)",
+  LOW:      "rgba(158,158,158,0.5)",
+};
+
+async function loadData(days) {
+  const resp = await fetch(`/api/trends?days=${days}`, {
+    headers: { "Authorization": "Basic " + btoa(window._authToken || "") }
+  });
+  if (!resp.ok) return;
+  const data = await resp.json();
+
+  // Timeline chart
+  const tlCtx = document.getElementById("timelineChart").getContext("2d");
+  if (timelineChart) timelineChart.destroy();
+  timelineChart = new Chart(tlCtx, {
+    type: "bar",
+    data: {
+      labels: data.labels,
+      datasets: Object.entries(data.datasets).map(([sev, vals]) => ({
+        label: sev,
+        data: vals,
+        backgroundColor: COLORS[sev],
+        stack: "stack",
+      }))
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { position: "top" } },
+      scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true } }
+    }
+  });
+
+  // Agency chart
+  const agCtx = document.getElementById("agencyChart").getContext("2d");
+  if (agencyChart) agencyChart.destroy();
+  agencyChart = new Chart(agCtx, {
+    type: "bar",
+    data: {
+      labels: data.agency_labels,
+      datasets: [{
+        label: "Total Changes",
+        data: data.agency_counts,
+        backgroundColor: "rgba(25, 113, 194, 0.75)",
+      }]
+    },
+    options: {
+      indexAxis: "y",
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: { x: { beginAtZero: true } }
+    }
+  });
+}
+
+document.getElementById("daysSelect").addEventListener("change", function() {
+  loadData(this.value);
+});
+
+// Initial load
+loadData(30);
+</script>
+{% endblock %}

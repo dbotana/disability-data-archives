@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block head %}
+<style>
+  .diff-wrap { overflow-x: auto; }
+  .diff-table { width: 100%; border-collapse: collapse; font-family: monospace; font-size: 0.78rem; }
+  .diff-table td { padding: 2px 8px; white-space: pre-wrap; word-break: break-all; }
+  .diff-table .ln { color: #aaa; user-select: none; width: 40px; text-align: right; border-right: 1px solid #dee2e6; }
+  .line-add    { background: #e6ffed; }
+  .line-remove { background: #ffebe9; }
+  .line-header { background: #f6f8fa; color: #586069; }
+  .line-context { background: #fff; }
+</style>
+{% endblock %}
+{% block content %}
+<h1>Diff #{{ change.change_id }}</h1>
+
+<div class="card">
+  <table style="width:auto">
+    <tr><th style="width:140px">Target</th><td>{{ change.target_name }} ({{ change.target_agency }})</td></tr>
+    <tr><th>URL</th><td><a href="{{ change.target_url }}" target="_blank">{{ change.target_url }}</a></td></tr>
+    <tr><th>Severity</th><td><span class="badge badge-{{ change.severity }}">{{ change.severity }}</span></td></tr>
+    <tr><th>Change Type</th><td><code>{{ change.change_type }}</code></td></tr>
+    <tr><th>Detected At</th><td>{{ change.detected_at }}</td></tr>
+    {% if change.pct_text_changed is not none %}
+    <tr><th>% Text Changed</th><td>{{ "%.1f"|format(change.pct_text_changed) }}%</td></tr>
+    {% endif %}
+    {% if change.semantic_similarity is not none %}
+    <tr><th>Semantic Similarity</th><td>{{ "%.3f"|format(change.semantic_similarity) }}</td></tr>
+    {% endif %}
+    {% if change.semantic_labels %}
+    <tr><th>Labels</th><td>{{ change.semantic_labels | join(", ") }}</td></tr>
+    {% endif %}
+  </table>
+</div>
+
+{% if diff_lines %}
+<h2>Content Diff</h2>
+<div class="card" style="padding:0">
+<div class="diff-wrap">
+<table class="diff-table">
+  <tbody>
+    {% for i, line in diff_lines | enumerate %}
+    <tr class="line-{{ line.type }}">
+      <td class="ln">{{ i + 1 }}</td>
+      <td>{{ line.text }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+</div>
+{% else %}
+<div class="card"><p class="text-muted">No diff text available for this change.</p></div>
+{% endif %}
+
+{% if before_snapshot and after_snapshot %}
+<h2>Snapshot Comparison</h2>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+  <div class="card">
+    <strong>Before</strong>
+    <p class="text-muted">{{ before_snapshot.fetched_at }} · HTTP {{ before_snapshot.http_status }}</p>
+    <code style="font-size:0.75rem">{{ before_snapshot.body_hash_sha256[:24] }}…</code>
+  </div>
+  <div class="card">
+    <strong>After</strong>
+    <p class="text-muted">{{ after_snapshot.fetched_at }} · HTTP {{ after_snapshot.http_status }}</p>
+    <code style="font-size:0.75rem">{{ after_snapshot.body_hash_sha256[:24] }}…</code>
+  </div>
+</div>
+{% endif %}
+
+<div class="mt-1">
+  <a href="/url/{{ change.target_id }}" class="btn btn-outline">← Back to Target</a>
+  <a href="/changes" class="btn btn-outline">All Changes</a>
+</div>
+{% endblock %}

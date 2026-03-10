@@ -1,0 +1,627 @@
+# =============================================================================
+# Federal Disability Data Monitor — Configuration
+# =============================================================================
+# All secrets should be set via environment variables; never hardcode them here.
+# Environment variable references use ${VAR_NAME} syntax (loaded via python-dotenv).
+#
+# DISCLAIMER: This is a non-partisan public interest research tool. It records
+# factual changes to publicly available federal data. It does not advocate for
+# or against any political position.
+# =============================================================================
+
+system:
+  db_path: "data/monitoring.db"
+  archive_dir: "archive"
+  log_level: "INFO"          # DEBUG | INFO | WARNING | ERROR
+  log_file: "logs/monitor.log"
+  timezone: "America/New_York"
+  max_archive_age_days: 365  # Prune raw HTML older than this
+
+  # ---------------------------------------------------------------------------
+  # Storage backend
+  # ---------------------------------------------------------------------------
+  # "github"  — Results committed as CSV files to the GitHub repo.
+  #             Requires GITHUB_TOKEN env var. Used by GitHub Actions and
+  #             `docker compose run --rm monitor`.
+  # "local"   — Results written to data/ on the local filesystem only
+  #             (no GitHub commit). Useful for offline testing / dry-runs.
+  storage_backend: "github"   # github | local
+
+  # GitHub repository that stores the data files.
+  # Override with GITHUB_REPOSITORY env var (set automatically by Actions).
+  # Format: "owner/repo"  e.g. "jsmith/disability-data-archives"
+  github_repo: "${GITHUB_REPOSITORY}"
+
+  # Branch to read from and commit to.
+  github_branch: "${GITHUB_REF_NAME:-main}"
+
+  # Paths inside the repo for the two data files.
+  data_changes_path: "data/changes.csv"
+  data_snapshots_path: "data/snapshots.csv"
+  data_summary_path: "data/run_summary.md"
+
+crawling:
+  min_delay_seconds: 2.0          # Minimum delay between requests to the same domain
+  max_concurrent_requests: 5      # Global semaphore limit across all fetches
+  request_timeout_seconds: 30     # Per-request timeout
+  max_retries: 3                  # Tenacity retry attempts on transient errors
+  retry_backoff_multiplier: 2.0   # Exponential backoff: 4s, 8s, 16s
+  user_agents:
+    - "FederalDataMonitor/1.0 (Public Interest Research; contact: research@example.org)"
+    - "DisabilityDataArchive/1.0 (Academic; +https://github.com/example/disability-data-archives)"
+    - "Mozilla/5.0 (compatible; DataMonitorBot/1.0; +https://github.com/example/disability-data-archives)"
+
+scheduling:
+  high_frequency_interval_hours: 6     # SSA, Regulations.gov, SODA APIs
+  medium_frequency_interval_hours: 24  # HTML pages, dataset indexes
+  low_frequency_interval_days: 7       # Deep diffs, Wayback comparisons
+  daily_digest_hour: 8                 # Hour (24h) to send daily digest email
+  daily_digest_minute: 0
+
+alerts:
+  email:
+    enabled: false
+    smtp_host: "smtp.gmail.com"
+    smtp_port: 587
+    use_tls: true
+    smtp_user: "${EMAIL_USER}"
+    smtp_password: "${EMAIL_PASSWORD}"
+    from_address: "monitor@example.org"
+    to_addresses:
+      - "alerts@example.org"
+    min_severity: "HIGH"   # CRITICAL | HIGH | MEDIUM | LOW
+
+  slack:
+    enabled: false
+    webhook_url: "${SLACK_WEBHOOK_URL}"
+    channel: "#disability-data-alerts"
+    min_severity: "HIGH"
+
+  rss:
+    enabled: true
+    output_path: "data/feed.xml"
+    feed_title: "Federal Disability Data Monitor"
+    feed_description: "Automated monitoring of federal disability datasets for changes and removals"
+    feed_link: "http://localhost:8000"
+    max_items: 200
+
+wayback:
+  enabled: true
+  save_api_base: "https://web.archive.org/save"
+  cdx_api_base: "http://web.archive.org/cdx/search/cdx"
+  availability_api: "https://archive.org/wayback/available"
+  access_key: "${WAYBACK_ACCESS_KEY}"     # Optional: S3-like keys for higher rate limits
+  secret_key: "${WAYBACK_SECRET_KEY}"
+  submit_on_critical: true               # Auto-submit CRITICAL changes to Wayback
+  submit_rate_limit_per_minute: 10       # Wayback Save API rate limit
+  verify_after_hours: 24                 # Re-check CDX after this many hours
+
+nlp:
+  embedding_model: "all-MiniLM-L6-v2"          # ~80MB, fast, good quality
+  zero_shot_model: "facebook/bart-large-mnli"  # ~1.6GB — disable if RAM-constrained
+  zero_shot_enabled: false                      # Set true only if you have 4GB+ free RAM
+  device: "cpu"                                 # "cuda" if GPU available
+  cache_dir: "models/"
+  batch_size: 8
+  disability_keywords:
+    - "disability"
+    - "disabilities"
+    - "disabled"
+    - "ADA"
+    - "Americans with Disabilities Act"
+    - "Section 504"
+    - "Section 508"
+    - "Rehabilitation Act"
+    - "SSDI"
+    - "SSI"
+    - "Social Security Disability"
+    - "IDEA"
+    - "Individuals with Disabilities Education"
+    - "accommodation"
+    - "reasonable accommodation"
+    - "accessibility"
+    - "assistive technology"
+    - "wheelchair"
+    - "blind"
+    - "deaf"
+    - "autism"
+    - "intellectual disability"
+    - "developmental disability"
+    - "mental health"
+    - "psychiatric"
+    - "cognitive impairment"
+    - "long COVID"
+    - "chronic condition"
+    - "vocational rehabilitation"
+    - "independent living"
+    - "community integration"
+    - "Olmstead"
+    - "neurodivergent"
+    - "NCBDDD"
+    - "NIDILRR"
+    - "ACL"
+    - "ADRC"
+    - "special education"
+    - "IEP"
+    - "Section 503"
+    - "undue hardship"
+  zero_shot_candidate_labels:
+    - "dataset deletion"
+    - "policy change"
+    - "data update"
+    - "website restructure"
+    - "access restriction"
+    - "new publication"
+    - "funding change"
+    - "regulatory update"
+    - "program elimination"
+    - "content restoration"
+
+dashboard:
+  host: "0.0.0.0"
+  port: 8000
+  auth_username: "${DASHBOARD_USER}"
+  auth_password: "${DASHBOARD_PASSWORD}"
+  page_size: 50
+  max_diff_display_bytes: 50000
+  debug: false
+
+# =============================================================================
+# MONITORING TARGETS
+# frequency: high (6h) | medium (24h) | low (weekly)
+# type: html | json | csv | xml
+# row_count_check: true to monitor row/record counts for tabular data
+# =============================================================================
+
+targets:
+
+  # ---------------------------------------------------------------------------
+  # SSA — Social Security Administration
+  # ---------------------------------------------------------------------------
+  - id: "ssa-press-releases"
+    url: "https://www.ssa.gov/news/press/releases/"
+    agency: "SSA"
+    name: "SSA Press Releases"
+    frequency: "high"
+    type: "html"
+    tags: ["benefits", "press", "policy"]
+
+  - id: "ssa-open-data-portal"
+    url: "https://data.ssa.gov/browse"
+    agency: "SSA"
+    name: "SSA Open Data Portal"
+    frequency: "high"
+    type: "html"
+    tags: ["open-data", "datasets"]
+    row_count_check: true
+
+  - id: "ssa-disability-insurance-stats"
+    url: "https://www.ssa.gov/policy/docs/statcomps/di_asr/"
+    agency: "SSA"
+    name: "SSA SSDI Annual Statistical Report"
+    frequency: "medium"
+    type: "html"
+    tags: ["SSDI", "statistics", "annual-report"]
+
+  - id: "ssa-ssi-annual-stats"
+    url: "https://www.ssa.gov/policy/docs/statcomps/ssi_asr/"
+    agency: "SSA"
+    name: "SSA SSI Annual Statistical Report"
+    frequency: "medium"
+    type: "html"
+    tags: ["SSI", "statistics", "annual-report"]
+
+  - id: "ssa-policy-pages"
+    url: "https://www.ssa.gov/policy/"
+    agency: "SSA"
+    name: "SSA Policy Home"
+    frequency: "medium"
+    type: "html"
+    tags: ["policy", "regulations"]
+
+  - id: "ssa-disability-benefits"
+    url: "https://www.ssa.gov/benefits/disability/"
+    agency: "SSA"
+    name: "SSA Disability Benefits Main Page"
+    frequency: "medium"
+    type: "html"
+    tags: ["SSDI", "benefits", "public-facing"]
+
+  - id: "ssa-rfcs"
+    url: "https://www.ssa.gov/disability/professionals/bluebook/evidentiary.htm"
+    agency: "SSA"
+    name: "SSA Disability Evaluation Under SSA"
+    frequency: "medium"
+    type: "html"
+    tags: ["SSDI", "evaluation", "medical"]
+
+  # ---------------------------------------------------------------------------
+  # CDC — Centers for Disease Control and Prevention
+  # ---------------------------------------------------------------------------
+  - id: "cdc-disability-health-data"
+    url: "https://www.cdc.gov/ncbddd/disabilityandhealth/data.html"
+    agency: "CDC"
+    name: "CDC Disability and Health Data"
+    frequency: "medium"
+    type: "html"
+    tags: ["health", "statistics", "NCBDDD"]
+
+  - id: "cdc-ncbddd-home"
+    url: "https://www.cdc.gov/ncbddd/"
+    agency: "CDC"
+    name: "CDC NCBDDD Home"
+    frequency: "medium"
+    type: "html"
+    tags: ["NCBDDD", "birth-defects", "developmental"]
+
+  - id: "cdc-brfss-disability"
+    url: "https://www.cdc.gov/brfss/data_documentation/index.htm"
+    agency: "CDC"
+    name: "CDC BRFSS Data Documentation"
+    frequency: "medium"
+    type: "html"
+    tags: ["BRFSS", "surveillance", "statistics"]
+
+  - id: "cdc-nhis-disability"
+    url: "https://www.cdc.gov/nchs/nhis/disability.htm"
+    agency: "CDC"
+    name: "CDC NHIS Disability Data"
+    frequency: "medium"
+    type: "html"
+    tags: ["NHIS", "health-interview", "statistics"]
+
+  - id: "cdc-soda-disability-datasets"
+    url: "https://data.cdc.gov/api/views/metadata/v1?limit=50&query=disability"
+    agency: "CDC"
+    name: "CDC SODA API Disability Datasets Metadata"
+    frequency: "high"
+    type: "json"
+    tags: ["SODA", "API", "metadata", "datasets"]
+    row_count_check: true
+
+  - id: "cdc-wonder-home"
+    url: "https://wonder.cdc.gov/"
+    agency: "CDC"
+    name: "CDC WONDER Query Interface"
+    frequency: "low"
+    type: "html"
+    tags: ["WONDER", "query", "statistics"]
+
+  - id: "cdc-disability-inclusion"
+    url: "https://www.cdc.gov/ncbddd/disabilityandhealth/disability-inclusion.html"
+    agency: "CDC"
+    name: "CDC Disability Inclusion"
+    frequency: "medium"
+    type: "html"
+    tags: ["inclusion", "public-health"]
+
+  - id: "cdc-autism-data"
+    url: "https://www.cdc.gov/autism/data-research/index.html"
+    agency: "CDC"
+    name: "CDC Autism Data and Research"
+    frequency: "medium"
+    type: "html"
+    tags: ["autism", "ADDM", "surveillance"]
+
+  # ---------------------------------------------------------------------------
+  # Census Bureau
+  # ---------------------------------------------------------------------------
+  - id: "census-disability-tables"
+    url: "https://www.census.gov/topics/health/disability/data/tables.html"
+    agency: "Census"
+    name: "Census Bureau Disability Data Tables"
+    frequency: "medium"
+    type: "html"
+    tags: ["ACS", "demographics", "tables"]
+
+  - id: "census-disability-topic"
+    url: "https://www.census.gov/topics/health/disability.html"
+    agency: "Census"
+    name: "Census Bureau Disability Topic Page"
+    frequency: "medium"
+    type: "html"
+    tags: ["ACS", "demographics", "overview"]
+
+  - id: "census-acs-disability-vars"
+    url: "https://api.census.gov/data/2022/acs/acs1/variables.json"
+    agency: "Census"
+    name: "Census ACS 2022 Variable Definitions"
+    frequency: "low"
+    type: "json"
+    tags: ["ACS", "API", "variables", "B18101"]
+
+  - id: "census-sipp-disability"
+    url: "https://www.census.gov/programs-surveys/sipp/data/datasets.html"
+    agency: "Census"
+    name: "Census SIPP Datasets"
+    frequency: "medium"
+    type: "html"
+    tags: ["SIPP", "microdata", "datasets"]
+
+  - id: "disability-census-gov"
+    url: "https://disability.census.gov/"
+    agency: "Census"
+    name: "disability.census.gov Portal"
+    frequency: "medium"
+    type: "html"
+    tags: ["portal", "public-facing"]
+
+  # ---------------------------------------------------------------------------
+  # NIH / NICHD / NIDILRR
+  # ---------------------------------------------------------------------------
+  - id: "nichd-disability-research"
+    url: "https://www.nichd.nih.gov/research/supported/disability"
+    agency: "NIH"
+    name: "NICHD Disability Research"
+    frequency: "medium"
+    type: "html"
+    tags: ["NIH", "research", "funding"]
+
+  - id: "nidilrr-home"
+    url: "https://acl.gov/about-acl/about-national-institute-disability-independent-living-rehabilitation-research"
+    agency: "ACL"
+    name: "NIDILRR Home (via ACL)"
+    frequency: "medium"
+    type: "html"
+    tags: ["NIDILRR", "research", "rehabilitation"]
+
+  - id: "nih-reporter-disability"
+    url: "https://api.reporter.nih.gov/v2/projects/search"
+    agency: "NIH"
+    name: "NIH RePORTER Disability Grant Portfolio (API)"
+    frequency: "low"
+    type: "json"
+    tags: ["grants", "research", "funding"]
+    row_count_check: true
+
+  # ---------------------------------------------------------------------------
+  # ACL — Administration for Community Living
+  # ---------------------------------------------------------------------------
+  - id: "acl-data-research"
+    url: "https://acl.gov/aging-and-disability-in-america/data-and-research"
+    agency: "ACL"
+    name: "ACL Aging and Disability Data and Research"
+    frequency: "medium"
+    type: "html"
+    tags: ["aging", "statistics", "research"]
+
+  - id: "acl-programs"
+    url: "https://acl.gov/programs"
+    agency: "ACL"
+    name: "ACL Programs Directory"
+    frequency: "medium"
+    type: "html"
+    tags: ["programs", "funding"]
+
+  - id: "acl-nci-data"
+    url: "https://acl.gov/programs/strengthening-aging-and-disability-networks/national-core-indicators"
+    agency: "ACL"
+    name: "ACL National Core Indicators"
+    frequency: "medium"
+    type: "html"
+    tags: ["NCI", "intellectual-disability", "statistics"]
+
+  - id: "acl-home"
+    url: "https://acl.gov/"
+    agency: "ACL"
+    name: "ACL Homepage"
+    frequency: "medium"
+    type: "html"
+    tags: ["public-facing", "overview"]
+
+  # ---------------------------------------------------------------------------
+  # DOL — Department of Labor
+  # ---------------------------------------------------------------------------
+  - id: "dol-odep-statistics"
+    url: "https://www.dol.gov/agencies/odep/research-evaluation/statistics"
+    agency: "DOL"
+    name: "DOL ODEP Disability Statistics"
+    frequency: "medium"
+    type: "html"
+    tags: ["employment", "statistics", "ODEP"]
+
+  - id: "bls-disability-employment"
+    url: "https://www.bls.gov/news.release/disabl.toc.htm"
+    agency: "BLS"
+    name: "BLS Persons with a Disability: Labor Force Characteristics"
+    frequency: "medium"
+    type: "html"
+    tags: ["employment", "labor-force", "statistics"]
+    row_count_check: true
+
+  - id: "askjan-home"
+    url: "https://askjan.org/"
+    agency: "JAN"
+    name: "Job Accommodation Network Homepage"
+    frequency: "medium"
+    type: "html"
+    tags: ["accommodation", "ADA", "employers"]
+
+  - id: "askjan-a-to-z"
+    url: "https://askjan.org/a-to-z.cfm"
+    agency: "JAN"
+    name: "JAN A-to-Z Disability Index"
+    frequency: "medium"
+    type: "html"
+    tags: ["accommodation", "disability-types"]
+
+  - id: "ofccp-section503"
+    url: "https://www.dol.gov/agencies/ofccp/disability"
+    agency: "DOL"
+    name: "OFCCP Section 503 Disability Page"
+    frequency: "medium"
+    type: "html"
+    tags: ["Section 503", "contractors", "employment"]
+
+  # ---------------------------------------------------------------------------
+  # ED — Department of Education
+  # ---------------------------------------------------------------------------
+  - id: "ed-idea-data"
+    url: "https://sites.ed.gov/idea/data/"
+    agency: "ED"
+    name: "IDEA Data Center"
+    frequency: "medium"
+    type: "html"
+    tags: ["IDEA", "special-education", "data"]
+
+  - id: "ed-ocr-data"
+    url: "https://ocrdata.ed.gov/"
+    agency: "ED"
+    name: "ED Office for Civil Rights Data Collection"
+    frequency: "medium"
+    type: "html"
+    tags: ["OCR", "civil-rights", "data"]
+
+  - id: "ed-special-ed-childcount"
+    url: "https://sites.ed.gov/idea/data/child-count-and-educational-environments/"
+    agency: "ED"
+    name: "IDEA Child Count and Educational Environments"
+    frequency: "medium"
+    type: "html"
+    tags: ["IDEA", "child-count", "statistics"]
+    row_count_check: true
+
+  - id: "ed-disability-page"
+    url: "https://www.ed.gov/about/offices/list/osers/osep/index.html"
+    agency: "ED"
+    name: "ED Office of Special Education Programs"
+    frequency: "medium"
+    type: "html"
+    tags: ["OSEP", "special-education", "policy"]
+
+  # ---------------------------------------------------------------------------
+  # DOJ / ADA.gov
+  # ---------------------------------------------------------------------------
+  - id: "ada-gov-home"
+    url: "https://www.ada.gov/"
+    agency: "DOJ"
+    name: "ADA.gov Homepage"
+    frequency: "medium"
+    type: "html"
+    tags: ["ADA", "civil-rights", "public-facing"]
+
+  - id: "ada-gov-resources"
+    url: "https://www.ada.gov/resources/"
+    agency: "DOJ"
+    name: "ADA.gov Resources"
+    frequency: "medium"
+    type: "html"
+    tags: ["ADA", "guidance", "resources"]
+
+  - id: "ada-gov-topics"
+    url: "https://www.ada.gov/topics/"
+    agency: "DOJ"
+    name: "ADA.gov Topics Index"
+    frequency: "low"
+    type: "html"
+    tags: ["ADA", "topics", "guidance"]
+
+  # ---------------------------------------------------------------------------
+  # HHS — General
+  # ---------------------------------------------------------------------------
+  - id: "hhs-disability-page"
+    url: "https://www.hhs.gov/programs/topic-sites/disability/index.html"
+    agency: "HHS"
+    name: "HHS Disability Topic Page"
+    frequency: "medium"
+    type: "html"
+    tags: ["HHS", "health", "overview"]
+
+  - id: "hhs-section504"
+    url: "https://www.hhs.gov/civil-rights/for-individuals/disability/index.html"
+    agency: "HHS"
+    name: "HHS Section 504 Civil Rights (Disability)"
+    frequency: "medium"
+    type: "html"
+    tags: ["Section 504", "civil-rights", "HHS"]
+
+  # ---------------------------------------------------------------------------
+  # Regulations.gov
+  # ---------------------------------------------------------------------------
+  - id: "regulations-disability-open"
+    url: "https://www.regulations.gov/search?filter=disability&status=open"
+    agency: "Regulations.gov"
+    name: "Regulations.gov Open Disability Rulemakings"
+    frequency: "high"
+    type: "html"
+    tags: ["rulemaking", "open", "disability"]
+    row_count_check: true
+
+  - id: "regulations-ada-rulemakings"
+    url: "https://www.regulations.gov/search?filter=ADA"
+    agency: "Regulations.gov"
+    name: "Regulations.gov ADA Rulemakings"
+    frequency: "high"
+    type: "html"
+    tags: ["ADA", "rulemaking"]
+    row_count_check: true
+
+  - id: "regulations-section504"
+    url: "https://www.regulations.gov/search?filter=section+504"
+    agency: "Regulations.gov"
+    name: "Regulations.gov Section 504 Rulemakings"
+    frequency: "high"
+    type: "html"
+    tags: ["Section 504", "rulemaking"]
+
+  # ---------------------------------------------------------------------------
+  # data.gov disability datasets
+  # ---------------------------------------------------------------------------
+  - id: "datagov-disability-search"
+    url: "https://catalog.data.gov/dataset?q=disability&sort=score+desc%2C+name+asc"
+    agency: "data.gov"
+    name: "data.gov Disability Dataset Catalog"
+    frequency: "medium"
+    type: "html"
+    tags: ["open-data", "catalog", "metadata"]
+    row_count_check: true
+
+  # ---------------------------------------------------------------------------
+  # White House / OMB accessibility pages
+  # ---------------------------------------------------------------------------
+  - id: "whitehouse-accessibility"
+    url: "https://www.whitehouse.gov/accessibility/"
+    agency: "WhiteHouse"
+    name: "White House Accessibility Page"
+    frequency: "medium"
+    type: "html"
+    tags: ["accessibility", "Section 508", "public-facing"]
+
+  # ---------------------------------------------------------------------------
+  # EEOC
+  # ---------------------------------------------------------------------------
+  - id: "eeoc-disability-discrimination"
+    url: "https://www.eeoc.gov/disability-discrimination"
+    agency: "EEOC"
+    name: "EEOC Disability Discrimination"
+    frequency: "medium"
+    type: "html"
+    tags: ["ADA", "employment", "discrimination"]
+
+  - id: "eeoc-ada-guidance"
+    url: "https://www.eeoc.gov/laws/guidance/questions-and-answers-clarifications-and-guidance-enforcement-equal-employment"
+    agency: "EEOC"
+    name: "EEOC ADA Enforcement Guidance"
+    frequency: "low"
+    type: "html"
+    tags: ["ADA", "guidance", "enforcement"]
+
+  # ---------------------------------------------------------------------------
+  # CMS — Centers for Medicare & Medicaid Services
+  # ---------------------------------------------------------------------------
+  - id: "cms-medicaid-disability"
+    url: "https://www.medicaid.gov/medicaid/long-term-services-supports/index.html"
+    agency: "CMS"
+    name: "CMS Medicaid Long-Term Services and Supports"
+    frequency: "medium"
+    type: "html"
+    tags: ["Medicaid", "LTSS", "disability"]
+
+  - id: "cms-open-data-disability"
+    url: "https://data.cms.gov/search?keywords=disability"
+    agency: "CMS"
+    name: "CMS Open Data Portal Disability Datasets"
+    frequency: "medium"
+    type: "html"
+    tags: ["open-data", "CMS", "disability"]
+    row_count_check: true

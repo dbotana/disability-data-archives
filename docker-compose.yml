@@ -1,0 +1,119 @@
+# =============================================================================
+# Federal Disability Data Monitor — Docker Compose (on-demand mode)
+# =============================================================================
+# GitHub Actions handles the daily scheduled monitoring run.
+# Docker is used for:
+#   1. On-demand monitoring:  docker compose run --rm monitor
+#   2. Dashboard only:        docker compose up dashboard
+#
+# Quick start:
+#   cp .env.example .env       # fill in your secrets
+#   docker compose run --rm monitor      # run a fresh check now
+#   docker compose up dashboard          # browse data at http://localhost:8000
+#
+# Or run both at once (check + serve):
+#   docker compose run --rm monitor && docker compose up -d dashboard
+# =============================================================================
+
+version: "3.9"
+
+# ---------------------------------------------------------------------------
+# Common environment variables shared across both services
+# ---------------------------------------------------------------------------
+x-common-env: &common-env
+  # GitHub credentials (required for committing results back to repo)
+  GITHUB_TOKEN: ${GITHUB_TOKEN:-}
+  GITHUB_REPOSITORY: ${GITHUB_REPOSITORY:-}
+  GITHUB_REF_NAME: ${GITHUB_REF_NAME:-main}
+  # Email alerts (optional)
+  EMAIL_USER: ${EMAIL_USER:-}
+  EMAIL_PASSWORD: ${EMAIL_PASSWORD:-}
+  # Slack alerts (optional)
+  SLACK_WEBHOOK_URL: ${SLACK_WEBHOOK_URL:-}
+  # Dashboard basic auth
+  DASHBOARD_USER: ${DASHBOARD_USER:-admin}
+  DASHBOARD_PASSWORD: ${DASHBOARD_PASSWORD:-changeme}
+  # Wayback Machine API keys (optional — increases rate limits)
+  WAYBACK_ACCESS_KEY: ${WAYBACK_ACCESS_KEY:-}
+  WAYBACK_SECRET_KEY: ${WAYBACK_SECRET_KEY:-}
+
+# ---------------------------------------------------------------------------
+# Common volume mounts
+# ---------------------------------------------------------------------------
+x-common-volumes: &common-volumes
+  - ./data:/app/data          # CSV data files (git-committed on GitHub)
+  - ./logs:/app/logs          # run logs
+  - ./models:/app/models      # cached NLP model (~80MB, avoids re-download)
+  - ./config.yaml:/app/config.yaml:ro
+
+services:
+  # --------------------------------------------------------------------------
+  # monitor — runs a single check, commits results to GitHub, then exits.
+  # Usage: docker compose run --rm monitor
+  #        docker compose run --rm monitor python run.py --dry-run
+  #        docker compose run --rm monitor python run.py --frequency high
+  # --------------------------------------------------------------------------
+  monitor:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: disability_monitor_run
+    # No restart — this service runs once and exits.
+    restart: "no"
+    volumes: *common-volumes
+    environment:
+      <<: *common-env
+      # Which frequency tier to check (all / high / medium / low)
+      MONITOR_FREQUENCY: ${MONITOR_FREQUENCY:-all}
+    command: ["python", "run.py", "--github"]
+    # Limit memory: MiniLM is ~300MB resident; leave headroom for diffing
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+        reservations:
+          memory: 256M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "3"
+
+  # --------------------------------------------------------------------------
+  # dashboard — serves the read-only web UI from local data/ CSV files.
+  # Usage: docker compose up dashboard
+  #        open http://localhost:8000  (login: admin / changeme by default)
+  # --------------------------------------------------------------------------
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: disability_dashboard
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      # data/ is read-only for the dashboard (monitor service writes it)
+      - ./data:/app/data:ro
+      - ./logs:/app/logs
+      - ./config.yaml:/app/config.yaml:ro
+    environment:
+      <<: *common-env
+    command: ["python", "main.py", "--dashboard-only", "--config", "config.yaml"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 60s
+      timeout: 10s
+      start_period: 15s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 128M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"

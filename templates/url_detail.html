@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Target: {{ target_info.name if target_info else target_id }}</h1>
+
+{% if target_info %}
+<div class="card">
+  <table style="width:auto">
+    <tr><th style="width:130px">Agency</th><td>{{ target_info.agency }}</td></tr>
+    <tr><th>URL</th><td><a href="{{ target_info.url }}" target="_blank" rel="noopener">{{ target_info.url }}</a></td></tr>
+    <tr><th>Frequency</th><td>{{ target_info.frequency }}</td></tr>
+    <tr><th>Type</th><td>{{ target_info.type }}</td></tr>
+    <tr><th>Tags</th><td>{{ target_info.tags | join(", ") }}</td></tr>
+  </table>
+</div>
+{% endif %}
+
+{% if latest_snapshot %}
+<div class="card">
+  <strong>Latest Snapshot</strong>
+  <table style="width:auto;margin-top:0.5rem">
+    <tr><th style="width:140px">Fetched</th><td>{{ latest_snapshot.fetched_at }}</td></tr>
+    <tr><th>HTTP Status</th><td>{{ latest_snapshot.http_status }}</td></tr>
+    <tr><th>Content Length</th><td>{{ latest_snapshot.content_length or "—" }} bytes</td></tr>
+    <tr><th>Body SHA-256</th><td><code style="font-size:0.75rem">{{ latest_snapshot.body_hash_sha256[:32] }}…</code></td></tr>
+    {% if latest_snapshot.redirect_url %}
+    <tr><th>Redirected To</th><td><a href="{{ latest_snapshot.redirect_url }}">{{ latest_snapshot.redirect_url }}</a></td></tr>
+    {% endif %}
+  </table>
+</div>
+{% endif %}
+
+<h2>Change History ({{ changes | length }} events)</h2>
+{% if changes %}
+<div class="card" style="padding:0">
+<table>
+  <thead>
+    <tr>
+      <th>Severity</th>
+      <th>Type</th>
+      <th>% Text Changed</th>
+      <th>Semantic Similarity</th>
+      <th>Detected</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for c in changes %}
+    <tr>
+      <td><span class="badge badge-{{ c.severity }}">{{ c.severity }}</span></td>
+      <td><code style="font-size:0.75rem">{{ c.change_type }}</code></td>
+      <td>
+        {% if c.pct_text_changed is not none %}{{ "%.1f"|format(c.pct_text_changed) }}%
+        {% else %}—{% endif %}
+      </td>
+      <td>
+        {% if c.semantic_similarity is not none %}{{ "%.3f"|format(c.semantic_similarity) }}
+        {% else %}—{% endif %}
+      </td>
+      <td class="text-muted">{{ c.detected_at[:16] if c.detected_at else "" }}</td>
+      <td><a class="btn btn-sm btn-outline" href="/diff/{{ c.change_id }}">View Diff</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+{% else %}
+<div class="card"><p class="text-muted">No changes recorded for this target.</p></div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page_title }} — Federal Disability Data Monitor</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f8f9fa; color: #212529; margin: 0; padding: 0;
+    }
+    nav {
+      background: #1a1a2e; color: #fff; padding: 0 1.5rem;
+      display: flex; align-items: center; gap: 1.5rem; height: 52px;
+    }
+    nav a { color: #cdd6f4; text-decoration: none; font-size: 0.9rem; }
+    nav a:hover { color: #fff; }
+    nav .brand { font-weight: 700; color: #fff; font-size: 1rem; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 1.5rem; }
+    h1 { font-size: 1.6rem; margin: 0 0 1rem; }
+    h2 { font-size: 1.2rem; margin: 1.5rem 0 0.75rem; }
+    .badge {
+      display: inline-block; padding: 2px 8px; border-radius: 4px;
+      font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+    }
+    .badge-CRITICAL { background: #f44336; color: #fff; }
+    .badge-HIGH     { background: #ff9800; color: #fff; }
+    .badge-MEDIUM   { background: #2196f3; color: #fff; }
+    .badge-LOW      { background: #9e9e9e; color: #fff; }
+    .card {
+      background: #fff; border: 1px solid #dee2e6; border-radius: 6px;
+      padding: 1.25rem; margin-bottom: 1rem;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    th { background: #f1f3f5; text-align: left; padding: 8px 10px; border-bottom: 2px solid #dee2e6; }
+    td { padding: 8px 10px; border-bottom: 1px solid #f1f3f5; vertical-align: top; }
+    tr:hover td { background: #f8f9fa; }
+    a { color: #1971c2; }
+    a:hover { color: #1864ab; }
+    .stat-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem;
+    }
+    .stat-card {
+      background: #fff; border: 1px solid #dee2e6; border-radius: 6px;
+      padding: 1rem; text-align: center;
+    }
+    .stat-card .num { font-size: 2rem; font-weight: 700; }
+    .stat-card .label { font-size: 0.8rem; color: #6c757d; text-transform: uppercase; }
+    .stat-CRITICAL .num { color: #f44336; }
+    .stat-HIGH .num     { color: #ff9800; }
+    .stat-MEDIUM .num   { color: #2196f3; }
+    .stat-LOW .num      { color: #9e9e9e; }
+    .filters { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1rem; align-items: flex-end; }
+    .filters label { font-size: 0.8rem; color: #6c757d; display: block; margin-bottom: 2px; }
+    .filters select, .filters input { padding: 6px 10px; border: 1px solid #ced4da; border-radius: 4px; font-size: 0.875rem; }
+    .btn {
+      display: inline-block; padding: 6px 14px; border-radius: 4px; border: none;
+      cursor: pointer; font-size: 0.875rem; text-decoration: none; background: #1971c2; color: #fff;
+    }
+    .btn:hover { background: #1864ab; color: #fff; }
+    .btn-sm { padding: 3px 10px; font-size: 0.8rem; }
+    .btn-outline { background: #fff; color: #1971c2; border: 1px solid #1971c2; }
+    .btn-outline:hover { background: #e7f5ff; }
+    .pagination { display: flex; gap: 0.5rem; margin-top: 1rem; }
+    .truncate { max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .text-muted { color: #6c757d; font-size: 0.85rem; }
+    .mt-1 { margin-top: 0.5rem; }
+    .disclaimer {
+      background: #fff3cd; border: 1px solid #ffc107; border-radius: 4px;
+      padding: 0.75rem 1rem; font-size: 0.8rem; color: #664d03; margin-bottom: 1rem;
+    }
+  </style>
+  {% block head %}{% endblock %}
+</head>
+<body>
+<nav>
+  <span class="brand">Federal Disability Data Monitor</span>
+  <a href="/">Dashboard</a>
+  <a href="/changes">Changes</a>
+  <a href="/trends">Trends</a>
+  <a href="/export">Export CSV</a>
+</nav>
+<div class="container">
+  <div class="disclaimer">
+    &#9432; This is a non-partisan public interest research tool. It records factual changes
+    to publicly available federal data without editorial commentary.
+  </div>
+  {% block content %}{% endblock %}
+</div>
+</body>
+</html>

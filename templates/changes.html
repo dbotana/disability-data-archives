@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Change Log</h1>
+
+<div class="filters">
+  <form method="get" style="display:contents">
+    <div>
+      <label>Severity</label>
+      <select name="severity">
+        <option value="">All</option>
+        {% for s in severities %}
+        <option value="{{ s }}" {% if selected_severity == s %}selected{% endif %}>{{ s }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div>
+      <label>Agency</label>
+      <select name="agency">
+        <option value="">All</option>
+        {% for a in agencies %}
+        <option value="{{ a }}" {% if selected_agency == a %}selected{% endif %}>{{ a }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div>
+      <label>Lookback (hours)</label>
+      <input type="number" name="hours" value="{{ hours }}" min="1" max="8760" style="width:90px">
+    </div>
+    <div style="margin-top:18px">
+      <button class="btn" type="submit">Filter</button>
+      <a class="btn btn-outline" href="/changes">Reset</a>
+    </div>
+  </form>
+</div>
+
+<div class="card" style="padding:0">
+{% if changes %}
+<table>
+  <thead>
+    <tr>
+      <th>Severity</th>
+      <th>Target</th>
+      <th>Agency</th>
+      <th>Type</th>
+      <th>% Changed</th>
+      <th>Similarity</th>
+      <th>Detected</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for c in changes %}
+    <tr>
+      <td><span class="badge badge-{{ c.severity }}">{{ c.severity }}</span></td>
+      <td>
+        <a href="/url/{{ c.target_id }}">{{ c.target_name }}</a>
+        <br><span class="text-muted truncate" style="max-width:220px;display:block">{{ c.target_url }}</span>
+      </td>
+      <td>{{ c.target_agency }}</td>
+      <td><code style="font-size:0.75rem">{{ c.change_type }}</code></td>
+      <td>
+        {% if c.pct_text_changed is not none %}
+          {{ "%.1f"|format(c.pct_text_changed) }}%
+        {% else %}—{% endif %}
+      </td>
+      <td>
+        {% if c.semantic_similarity is not none %}
+          {{ "%.2f"|format(c.semantic_similarity) }}
+        {% else %}—{% endif %}
+      </td>
+      <td class="text-muted" style="white-space:nowrap">{{ c.detected_at[:16] if c.detected_at else "" }}</td>
+      <td><a class="btn btn-sm btn-outline" href="/diff/{{ c.change_id }}">Diff</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="text-muted" style="padding:1rem">No changes found for the selected filters.</p>
+{% endif %}
+</div>
+
+<div class="pagination">
+  {% if page > 1 %}
+  <a class="btn btn-outline" href="/changes?page={{ page-1 }}&severity={{ selected_severity }}&agency={{ selected_agency }}&hours={{ hours }}">← Prev</a>
+  {% endif %}
+  <span style="padding:6px 10px;font-size:0.875rem;color:#495057">Page {{ page }}</span>
+  {% if has_next %}
+  <a class="btn btn-outline" href="/changes?page={{ page+1 }}&severity={{ selected_severity }}&agency={{ selected_agency }}&hours={{ hours }}">Next →</a>
+  {% endif %}
+</div>
+{% endblock %}

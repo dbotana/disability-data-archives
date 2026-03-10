@@ -1,0 +1,117 @@
+name: Federal Disability Data Monitor
+
+on:
+  # Automatic daily run at 8am UTC — no computer required
+  schedule:
+    - cron: "0 8 * * *"
+
+  # Manual "Run workflow" button in GitHub Actions tab
+  workflow_dispatch:
+    inputs:
+      frequency:
+        description: "Which targets to check (all / high / medium / low)"
+        required: false
+        default: "all"
+        type: choice
+        options:
+          - all
+          - high
+          - medium
+          - low
+
+# Prevent concurrent runs from conflicting on commits
+concurrency:
+  group: disability-monitor
+  cancel-in-progress: false
+
+jobs:
+  monitor:
+    name: Run monitoring check
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    permissions:
+      contents: write     # Required to commit data files back to repo
+
+    steps:
+      # ------------------------------------------------------------------
+      # 1. Checkout repo
+      # ------------------------------------------------------------------
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      # ------------------------------------------------------------------
+      # 2. Set up Python
+      # ------------------------------------------------------------------
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      # ------------------------------------------------------------------
+      # 3. Install dependencies
+      #    torch CPU-only (much smaller than default CUDA build)
+      # ------------------------------------------------------------------
+      - name: Install CPU-only PyTorch
+        run: |
+          pip install torch==2.3.0+cpu --index-url https://download.pytorch.org/whl/cpu
+
+      - name: Install Python dependencies
+        run: |
+          pip install -r requirements.txt
+
+      # ------------------------------------------------------------------
+      # 4. Cache NLP model (avoids re-downloading ~80MB on every run)
+      # ------------------------------------------------------------------
+      - name: Cache sentence-transformers model
+        uses: actions/cache@v4
+        with:
+          path: models/
+          key: nlp-models-miniLM-v6-v2
+          restore-keys: |
+            nlp-models-
+
+      # ------------------------------------------------------------------
+      # 5. Run monitoring check
+      # ------------------------------------------------------------------
+      - name: Run monitoring check
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_REF_NAME: ${{ github.ref_name }}
+          # Alert channels (configure in repo Settings → Secrets)
+          EMAIL_USER: ${{ secrets.EMAIL_USER }}
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          WAYBACK_ACCESS_KEY: ${{ secrets.WAYBACK_ACCESS_KEY }}
+          WAYBACK_SECRET_KEY: ${{ secrets.WAYBACK_SECRET_KEY }}
+          # Frequency filter from manual dispatch (default: all)
+          MONITOR_FREQUENCY: ${{ github.event.inputs.frequency || 'all' }}
+        run: |
+          python run.py --github
+
+      # ------------------------------------------------------------------
+      # 6. Upload run log as artifact (kept 30 days for debugging)
+      # ------------------------------------------------------------------
+      - name: Upload run log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: monitor-log-${{ github.run_id }}
+          path: logs/monitor.log
+          retention-days: 30
+
+      # ------------------------------------------------------------------
+      # 7. Summary in Actions UI
+      # ------------------------------------------------------------------
+      - name: Write job summary
+        if: always()
+        run: |
+          if [ -f data/run_summary.md ]; then
+            cat data/run_summary.md >> $GITHUB_STEP_SUMMARY
+          else
+            echo "No summary generated." >> $GITHUB_STEP_SUMMARY
+          fi

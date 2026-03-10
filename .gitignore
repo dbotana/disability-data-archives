@@ -1,0 +1,84 @@
+# =============================================================================
+# Federal Disability Data Monitor — .gitignore
+# =============================================================================
+
+# ---------------------------------------------------------------------------
+# Python
+# ---------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+*.egg
+dist/
+build/
+.eggs/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.tox/
+htmlcov/
+.coverage
+coverage.xml
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# ---------------------------------------------------------------------------
+# Local secrets — never commit these
+# ---------------------------------------------------------------------------
+.env
+.env.local
+.env.*.local
+
+# ---------------------------------------------------------------------------
+# Local runtime state
+# ---------------------------------------------------------------------------
+# SQLite database (only used in local/Docker mode; GitHub mode uses CSV)
+data/monitoring.db
+data/monitoring.db-shm
+data/monitoring.db-wal
+
+# Raw HTML archive snapshots (Wayback Machine handles archival)
+archive/
+
+# Log files
+logs/
+
+# NLP model weights (~80MB) — cached in GitHub Actions via actions/cache
+# and locally by sentence-transformers; no need to version-control
+models/
+
+# ---------------------------------------------------------------------------
+# What IS committed in data/
+# ---------------------------------------------------------------------------
+# data/changes.csv     — append-only change log (committed by monitor)
+# data/snapshots.csv   — latest snapshot per target (committed by monitor)
+# data/feed.xml        — RSS feed (committed by monitor)
+# data/run_summary.md  — last run summary (committed by monitor)
+# data/digests/        — daily digest markdown files
+
+# Keep the data directory itself tracked even when empty
+!data/.gitkeep
+!data/changes.csv
+!data/snapshots.csv
+!data/feed.xml
+!data/run_summary.md
+!data/digests/
+
+# ---------------------------------------------------------------------------
+# OS / editor noise
+# ---------------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.code-workspace
