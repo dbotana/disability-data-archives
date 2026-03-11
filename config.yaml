@@ -178,7 +178,7 @@ targets:
   # ---------------------------------------------------------------------------
   # SSA — Social Security Administration
   # ---------------------------------------------------------------------------
-  # SSA press release RSS feed — machine-readable, not blocked by Akamai CDN
+  # SSA press releases RSS — cdx_proxy: true enables Wayback CDX fallback if Akamai blocks
   - id: "ssa-press-releases"
     url: "https://www.ssa.gov/rss/mr.xml"
     agency: "SSA"
@@ -187,60 +187,61 @@ targets:
     type: "xml"
     tags: ["benefits", "press", "policy", "RSS"]
     row_count_check: true
+    cdx_proxy: true
 
+  # SSA DKAN API — full dataset catalog (replaces blocked policy/docs/data/index.html)
   - id: "ssa-public-use-data-index"
-    url: "https://www.ssa.gov/policy/docs/data/index.html"
+    url: "https://www.ssa.gov/data/api/1/metastore/schemas/dataset/items?show-reference-ids"
     agency: "SSA"
-    name: "SSA Public-Use Data Files Index"
+    name: "SSA Public-Use Data Files (DKAN Catalog)"
     frequency: "medium"
-    type: "html"
-    tags: ["open-data", "microdata", "datasets"]
-    row_count_check: false
+    type: "json"
+    tags: ["open-data", "microdata", "DKAN", "catalog"]
+    row_count_check: true
 
+  # SSA DKAN dataset records (replace blocked microdata HTML index pages)
   - id: "ssa-bepuf-2020"
-    url: "https://www.ssa.gov/policy/docs/microdata/bepuf-2020/index.html"
+    url: "https://www.ssa.gov/data/api/1/dataset/bepuf-2020"
     agency: "SSA"
-    name: "SSA Benefits & Earnings Public-Use File 2020"
+    name: "SSA Benefits & Earnings Public-Use File 2020 (DKAN)"
     frequency: "low"
-    type: "html"
+    type: "json"
     tags: ["microdata", "OASDI", "earnings", "BEPUF"]
 
   - id: "ssa-epuf"
-    url: "https://www.ssa.gov/policy/docs/microdata/epuf/index.html"
+    url: "https://www.ssa.gov/data/api/1/dataset/epuf"
     agency: "SSA"
-    name: "SSA Earnings Public-Use File"
+    name: "SSA Earnings Public-Use File (DKAN)"
     frequency: "low"
-    type: "html"
+    type: "json"
     tags: ["microdata", "earnings", "EPUF"]
 
   - id: "ssa-ssi-microdata"
-    url: "https://www.ssa.gov/policy/docs/microdata/ssr/index.html"
+    url: "https://www.ssa.gov/data/api/1/dataset/ssr"
     agency: "SSA"
-    name: "SSA SSI Public-Use Microdata File"
+    name: "SSA SSI Public-Use Microdata File (DKAN)"
     frequency: "low"
-    type: "html"
+    type: "json"
     tags: ["microdata", "SSI", "disability"]
 
-  # SSA Open Data JSON — machine-readable stats endpoint, not CDN-blocked
+  # SSA DKAN dataset records for annual statistical reports (replace blocked statcomps JSON)
   - id: "ssa-disability-insurance-stats"
-    url: "https://www.ssa.gov/policy/docs/statcomps/di_asr/index.json"
+    url: "https://www.ssa.gov/data/api/1/dataset/di_asr"
     agency: "SSA"
-    name: "SSA SSDI Annual Statistical Report (JSON)"
+    name: "SSA SSDI Annual Statistical Report (DKAN)"
     frequency: "medium"
     type: "json"
     tags: ["SSDI", "statistics", "annual-report"]
-    row_count_check: true
 
   - id: "ssa-ssi-annual-stats"
-    url: "https://www.ssa.gov/policy/docs/statcomps/ssi_asr/index.json"
+    url: "https://www.ssa.gov/data/api/1/dataset/ssi_asr"
     agency: "SSA"
-    name: "SSA SSI Annual Statistical Report (JSON)"
+    name: "SSA SSI Annual Statistical Report (DKAN)"
     frequency: "medium"
     type: "json"
     tags: ["SSI", "statistics", "annual-report"]
-    row_count_check: true
 
-  # SSA Open Data portal — catalog of machine-readable SSA datasets
+  # SSA Open Data full catalog (kept separately from per-dataset records above)
   - id: "ssa-open-data-catalog"
     url: "https://www.ssa.gov/data/api/1/metastore/schemas/dataset/items?show-reference-ids"
     agency: "SSA"
@@ -250,7 +251,7 @@ targets:
     tags: ["open-data", "DKAN", "catalog"]
     row_count_check: true
 
-  # SSA benefits/disability — use the sitemap XML rather than the CDN-blocked HTML page
+  # SSA sitemap — cdx_proxy: true as fallback if Akamai blocks the XML
   - id: "ssa-disability-benefits"
     url: "https://www.ssa.gov/sitemap.xml"
     agency: "SSA"
@@ -259,8 +260,9 @@ targets:
     type: "xml"
     tags: ["SSDI", "benefits", "sitemap"]
     row_count_check: true
+    cdx_proxy: true
 
-  # SSA Blue Book / disability evaluation — available via the Open Data API
+  # SSA Blue Book — HTML-only; browser headers + CDX fallback
   - id: "ssa-bluebook-listings"
     url: "https://www.ssa.gov/disability/professionals/bluebook/listing-impairments.htm"
     agency: "SSA"
@@ -268,6 +270,7 @@ targets:
     frequency: "medium"
     type: "html"
     tags: ["SSDI", "Blue-Book", "medical-listings"]
+    cdx_proxy: true
 
   # ---------------------------------------------------------------------------
   # CDC — Centers for Disease Control and Prevention
@@ -400,13 +403,25 @@ targets:
   # ---------------------------------------------------------------------------
   # NIH / NICHD / NIDILRR
   # ---------------------------------------------------------------------------
+  # NICHD disability page returned 404 — keep as tombstone to detect if it's restored
   - id: "nichd-disability-research"
     url: "https://www.nichd.nih.gov/research/supported/disability"
     agency: "NIH"
-    name: "NICHD Disability Research"
+    name: "NICHD Disability Research (tombstone — 404 as of 2026-03)"
     frequency: "medium"
     type: "html"
-    tags: ["NIH", "research", "funding"]
+    tags: ["NIH", "research", "funding", "404-watch"]
+    cdx_proxy: true
+
+  # NICHD parent page — monitor for structural changes and any new disability programs
+  - id: "nichd-research-programs"
+    url: "https://www.nichd.nih.gov/research/supported"
+    agency: "NIH"
+    name: "NICHD Research Programs"
+    frequency: "medium"
+    type: "html"
+    tags: ["NIH", "research", "programs"]
+    row_count_check: true
 
   # NIDILRR page was removed from ACL — monitor ACL home for any NIDILRR mention
   # and track the independent NIDILRR grantee database as the data source
@@ -489,7 +504,7 @@ targets:
     type: "html"
     tags: ["employment", "statistics", "ODEP"]
 
-  # BLS news release table of contents — lists all published disability employment releases
+  # BLS HTML pages — browser headers + CDX fallback (BLS blocks bots on news.release/)
   - id: "bls-disability-release-toc"
     url: "https://www.bls.gov/news.release/disabl.toc.htm"
     agency: "BLS"
@@ -498,8 +513,8 @@ targets:
     type: "html"
     tags: ["employment", "labor-force", "statistics"]
     row_count_check: true
+    cdx_proxy: true
 
-  # BLS actual data tables embedded in the news release
   - id: "bls-disability-data-tables"
     url: "https://www.bls.gov/news.release/disabl.nr0.htm"
     agency: "BLS"
@@ -508,15 +523,17 @@ targets:
     type: "html"
     tags: ["employment", "labor-force", "tables"]
     row_count_check: true
+    cdx_proxy: true
 
-  # BLS flat-file download server — tab-delimited time series for disability employment
+  # BLS public API — disability employment timeseries (replaces blocked download.bls.gov flat-file server)
+  # LNU02074593 = employment level with disability; LNU04074593 = unemployment rate with disability
   - id: "bls-disability-flat-files"
-    url: "https://download.bls.gov/pub/time.series/ln/"
+    url: "https://api.bls.gov/publicAPI/v2/timeseries/data/LNU02074593?startyear=2023&endyear=2025"
     agency: "BLS"
-    name: "BLS Labor Force Statistics Flat Files (includes disability series)"
+    name: "BLS Employment Level — With Disability (CPS Series LNU02074593)"
     frequency: "low"
-    type: "html"
-    tags: ["flat-files", "time-series", "download"]
+    type: "json"
+    tags: ["timeseries", "employment", "disability", "API"]
     row_count_check: true
 
   - id: "askjan-home"
@@ -555,11 +572,11 @@ targets:
     tags: ["IDEA", "special-education", "data"]
     row_count_check: true
 
-  # ED data.ed.gov CKAN API — returns JSON list of IDEA datasets including child count files
+  # catalog.data.gov aggregates all federal CKAN catalogs including ED — not blocked unlike data.ed.gov
   - id: "ed-ckan-idea-datasets"
-    url: "https://data.ed.gov/api/3/action/package_search?q=disability+IDEA&rows=50"
+    url: "https://catalog.data.gov/api/3/action/package_search?q=IDEA+disability&fq=organization:ed-gov&rows=50"
     agency: "ED"
-    name: "ED Open Data CKAN API — IDEA/Disability Datasets"
+    name: "ED Open Data — IDEA/Disability Datasets (via catalog.data.gov)"
     frequency: "medium"
     type: "json"
     tags: ["IDEA", "CKAN", "API", "datasets"]
@@ -630,6 +647,7 @@ targets:
   # ---------------------------------------------------------------------------
   # HHS — General
   # ---------------------------------------------------------------------------
+  # HHS pages — browser headers + CDX fallback (Akamai-blocked for bots)
   - id: "hhs-disability-page"
     url: "https://www.hhs.gov/programs/topic-sites/disability/index.html"
     agency: "HHS"
@@ -637,6 +655,7 @@ targets:
     frequency: "medium"
     type: "html"
     tags: ["HHS", "health", "overview"]
+    cdx_proxy: true
 
   - id: "hhs-section504"
     url: "https://www.hhs.gov/civil-rights/for-individuals/disability/index.html"
@@ -645,35 +664,59 @@ targets:
     frequency: "medium"
     type: "html"
     tags: ["Section 504", "civil-rights", "HHS"]
+    cdx_proxy: true
+
+  # HHS Project Open Data catalog — machine-readable, not Akamai-blocked
+  - id: "hhs-open-data-catalog"
+    url: "https://www.hhs.gov/data.json"
+    agency: "HHS"
+    name: "HHS Open Data Catalog (data.json)"
+    frequency: "medium"
+    type: "json"
+    tags: ["HHS", "open-data", "catalog", "data.json"]
+    row_count_check: true
+
+  # healthdata.gov CKAN API — disability datasets
+  - id: "healthdata-disability-catalog"
+    url: "https://healthdata.gov/api/3/action/package_search?q=disability&rows=50"
+    agency: "HHS"
+    name: "healthdata.gov Disability Dataset Catalog (CKAN API)"
+    frequency: "medium"
+    type: "json"
+    tags: ["HHS", "CKAN", "API", "catalog"]
+    row_count_check: true
 
   # ---------------------------------------------------------------------------
   # Regulations.gov
   # ---------------------------------------------------------------------------
+  # Regulations.gov REST API — bypasses CloudFront-blocked search UI entirely.
+  # Requires free API key from api.data.gov/signup/ stored as REGULATIONS_GOV_API_KEY secret.
   - id: "regulations-disability-open"
-    url: "https://www.regulations.gov/search?filter=disability&status=open"
+    url: "https://api.regulations.gov/v4/dockets?filter[keyword]=disability&filter[docketType]=Rulemaking&page[size]=20&api_key=${REGULATIONS_GOV_API_KEY}"
     agency: "Regulations.gov"
-    name: "Regulations.gov Open Disability Rulemakings"
+    name: "Regulations.gov Open Disability Rulemakings (REST API)"
     frequency: "high"
-    type: "html"
-    tags: ["rulemaking", "open", "disability"]
+    type: "json"
+    tags: ["rulemaking", "open", "disability", "API"]
     row_count_check: true
 
   - id: "regulations-ada-rulemakings"
-    url: "https://www.regulations.gov/search?filter=ADA"
+    url: "https://api.regulations.gov/v4/dockets?filter[keyword]=ADA&page[size]=20&api_key=${REGULATIONS_GOV_API_KEY}"
     agency: "Regulations.gov"
-    name: "Regulations.gov ADA Rulemakings"
+    name: "Regulations.gov ADA Rulemakings (REST API)"
     frequency: "high"
-    type: "html"
-    tags: ["ADA", "rulemaking"]
+    type: "json"
+    tags: ["ADA", "rulemaking", "API"]
     row_count_check: true
 
   - id: "regulations-section504"
-    url: "https://www.regulations.gov/search?filter=section+504"
+    url: "https://api.regulations.gov/v4/dockets?filter[keyword]=section+504&page[size]=20&api_key=${REGULATIONS_GOV_API_KEY}"
     agency: "Regulations.gov"
-    name: "Regulations.gov Section 504 Rulemakings"
+    name: "Regulations.gov Section 504 Rulemakings (REST API)"
     frequency: "high"
-    type: "html"
-    tags: ["Section 504", "rulemaking"]
+    type: "json"
+    tags: ["Section 504", "rulemaking", "API"]
+    row_count_check: true
 
   # ---------------------------------------------------------------------------
   # data.gov disability datasets

@@ -88,6 +88,10 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           WAYBACK_ACCESS_KEY: ${{ secrets.WAYBACK_ACCESS_KEY }}
           WAYBACK_SECRET_KEY: ${{ secrets.WAYBACK_SECRET_KEY }}
+          # Regulations.gov REST API key (free at api.data.gov/signup/)
+          REGULATIONS_GOV_API_KEY: ${{ secrets.REGULATIONS_GOV_API_KEY }}
+          # BLS public API key (optional — higher rate limit; register at bls.gov)
+          BLS_API_KEY: ${{ secrets.BLS_API_KEY }}
           # Frequency filter from manual dispatch (default: all)
           MONITOR_FREQUENCY: ${{ github.event.inputs.frequency || 'all' }}
         run: |

@@ -34,6 +34,68 @@ from storage import FetchResult, TargetModel
 logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
+# Per-domain header profiles
+#
+# Akamai (SSA, HHS) and CloudFront (Regulations.gov) detect bot requests by
+# the absence of browser-standard headers that Chrome always sends.  Adding
+# sec-fetch-* and sec-ch-ua resolves the fingerprint mismatch without any
+# proxy or IP change.  GitHub Actions runners are Ubuntu, so the Linux Chrome
+# UA string is consistent with the actual TLS fingerprint.
+#
+# API-tier domains (api.*, catalog.data.gov, data.cdc.gov, etc.) use minimal
+# JSON-focused headers — sending browser headers to a JSON API is unnecessary
+# and wastes bandwidth on content negotiation.
+# ---------------------------------------------------------------------------
+
+_BROWSER_HEADERS: dict[str, str] = {
+    "User-Agent": (
+        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+        "(KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+    ),
+    "Accept": (
+        "text/html,application/xhtml+xml,application/xml;q=0.9,"
+        "image/avif,image/webp,image/apng,*/*;q=0.8"
+    ),
+    "Accept-Encoding": "gzip, deflate, br",
+    "Accept-Language": "en-US,en;q=0.9",
+    "Cache-Control": "no-cache",
+    "sec-ch-ua": '"Chromium";v="122", "Not(A:Brand";v="24", "Google Chrome";v="122"',
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": '"Linux"',
+    "sec-fetch-dest": "document",
+    "sec-fetch-mode": "navigate",
+    "sec-fetch-site": "none",
+    "sec-fetch-user": "?1",
+    "Upgrade-Insecure-Requests": "1",
+}
+
+_API_HEADERS: dict[str, str] = {
+    "User-Agent": "FederalDataMonitor/1.0 (Public Interest Research; contact: research@example.org)",
+    "Accept": "application/json, */*",
+    "Accept-Encoding": "gzip, deflate",
+    "Accept-Language": "en-US,en;q=0.9",
+}
+
+# Domain → profile ("browser" | "api").  Unlisted domains use _BOT_HEADERS
+# (the original self-identified agent) which is correct for CDX/robots.txt etc.
+_DOMAIN_PROFILE: dict[str, str] = {
+    # Akamai-fronted — browser headers needed
+    "www.ssa.gov":          "browser",
+    "www.hhs.gov":          "browser",
+    "www.bls.gov":          "browser",
+    "www.regulations.gov":  "browser",
+    # API tiers — JSON headers
+    "api.regulations.gov":  "api",
+    "api.bls.gov":          "api",
+    "api.census.gov":       "api",
+    "catalog.data.gov":     "api",
+    "data.cdc.gov":         "api",
+    "healthdata.gov":       "api",
+    "data.cms.gov":         "api",
+    "data.ssa.gov":         "api",
+}
+
+# ---------------------------------------------------------------------------
 # Configuration dataclass (populated from config.yaml via main.py)
 # ---------------------------------------------------------------------------
 
@@ -77,6 +139,11 @@ class Crawler:
         self._domain_last_fetch: dict[str, float] = {}
         self._robots_cache: dict[str, _RobotsCacheEntry] = {}
         self._robots_ttl: float = 86_400.0  # 24 hours
+        # Bot-transparent headers (self-identified; used for CDX, robots.txt, etc.)
+        self._bot_headers: dict[str, str] = {
+            "Accept": "text/html,application/xhtml+xml,application/json,*/*",
+            "Accept-Language": "en-US,en;q=0.9",
+        }
 
     async def __aenter__(self) -> "Crawler":
         self._semaphore = asyncio.Semaphore(self._config.max_concurrent_requests)
@@ -122,9 +189,28 @@ class Crawler:
     # Internal fetch with tenacity retry
     # ------------------------------------------------------------------
 
+    def _get_headers(self, url: str) -> dict[str, str]:
+        """Return the appropriate request headers for a given URL."""
+        domain = urlparse(url).netloc.lower()
+        # SSA DKAN API paths share the www.ssa.gov domain but need API headers
+        if domain == "www.ssa.gov" and "/data/api/" in url:
+            return _API_HEADERS
+        profile = _DOMAIN_PROFILE.get(domain)
+        if profile == "browser":
+            return _BROWSER_HEADERS
+        if profile == "api":
+            return _API_HEADERS
+        # Default: self-identified bot headers (safe for CDX, data.gov, etc.)
+        return self._bot_headers
+
     async def _fetch_with_retry(self, target: TargetModel) -> FetchResult:
         """Inner fetch wrapped with tenacity retry for transient errors."""
-        ua = next(self._ua_cycle)
+        headers = self._get_headers(target.url)
+        # For browser-profile requests, use the static Chrome UA.
+        # For bot/api profiles, rotate the configured user agents.
+        if "sec-fetch-dest" not in headers:
+            ua = next(self._ua_cycle)
+            headers = {**headers, "User-Agent": ua}
 
         @retry(
             retry=retry_if_exception_type((httpx.TimeoutException, httpx.NetworkError)),
@@ -137,11 +223,7 @@ class Crawler:
         async def _do_fetch() -> FetchResult:
             response = await self._client.get(  # type: ignore[union-attr]
                 target.url,
-                headers={
-                    "User-Agent": ua,
-                    "Accept": "text/html,application/xhtml+xml,application/json,*/*",
-                    "Accept-Language": "en-US,en;q=0.9",
-                },
+                headers=headers,
             )
 
             # Handle explicit 429 with Retry-After

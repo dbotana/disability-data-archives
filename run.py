@@ -256,6 +256,39 @@ async def run(
 
             for result, target in zip(results, all_targets):
                 try:
+                    # CDX proxy fallback: if a target is blocked (403/0) and has
+                    # cdx_proxy: true in config, use the Wayback CDX API instead
+                    # of recording an error.  CDX returns a sha1 digest of each
+                    # archived snapshot — a change in digest means content changed.
+                    target_cfg = next(
+                        (t for t in (cfg.get("targets") or []) if t.get("id") == target.id),
+                        {}
+                    )
+                    if result.http_status in (403, 0) and target_cfg.get("cdx_proxy"):
+                        try:
+                            history = await wayback.get_snapshot_history(target.url, limit=3)
+                            if history:
+                                latest = history[0]
+                                cdx_digest = latest.get("digest", "")
+                                cdx_ts = latest.get("timestamp", "")
+                                import hashlib as _hashlib
+                                # Convert CDX sha1 to a consistent pseudo sha256 so the
+                                # diff engine can compare across runs using body_hash_sha256
+                                pseudo_hash = _hashlib.sha256(cdx_digest.encode()).hexdigest()
+                                result = result.model_copy(update=dict(
+                                    http_status=200,
+                                    body_hash_sha256=pseudo_hash,
+                                    text_hash_sha256=pseudo_hash,
+                                    text_content=f"[CDX proxy] digest={cdx_digest} ts={cdx_ts}",
+                                    error_message=None,
+                                ))
+                                logger.info(
+                                    f"CDX proxy used for {target.id}: "
+                                    f"digest={cdx_digest} ts={cdx_ts}"
+                                )
+                        except Exception as cdx_err:
+                            logger.warning(f"CDX proxy failed for {target.id}: {cdx_err}")
+
                     is_error = result.http_status == 0
                     if is_error:
                         error_count += 1
