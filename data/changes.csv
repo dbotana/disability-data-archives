@@ -275,3 +275,163 @@ change_id,target_id,target_name,target_agency,target_url,detected_at,severity,ch
 +++ after (2026-03-10)
 @@ -0,0 +1 @@
 +ERROR: The request could not be satisfied 403 ERROR The request could not be satisfied. Request blocked. We can't connect to the server for this app or website at this time. There might be too much traffic or a configuration error. Try again later, or contact the app or website owner. If you provide content to customers through CloudFront, you can find steps to troubleshoot and help prevent this error by reviewing the CloudFront docum",HTTP status changed: 200 → 403
+52,ssa-press-releases,SSA Press Releases RSS Feed,SSA,https://www.ssa.gov/rss/mr.xml,2026-03-11T08:56:14.364387+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-11)
+@@ -0,0 +1 @@
++Access Denied Access Denied You don't have permission to access ""http://www.ssa.gov/rss/mr.xml"" on this server. Reference #18.2e0ed217.1773219364.943307d0 https://errors.edgesuite.net/18.2e0ed217.1773219364.943307d0",Major content change: 100.0% text altered
+53,ssa-public-use-data-index,SSA Public-Use Data Files Index,SSA,https://www.ssa.gov/policy/docs/data/index.html,2026-03-11T08:56:14.365022+00:00,HIGH,content_major,100.0,0.5,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-11)
+@@ -0,0 +1 @@
++Access Denied Access Denied You don't have permission to access ""http://www.ssa.gov/policy/docs/data/index.html"" on this server. Reference #18.80ed217.1773219364.ff2bd66b https://errors.edgesuite.net/18.80ed217.1773219364.ff2bd66b",Major content change: 100.0% text altered
+54,ssa-bepuf-2020,SSA Benefits & Earnings Public-Use File 2020,SSA,https://www.ssa.gov/policy/docs/microdata/bepuf-2020/index.html,2026-03-11T08:56:14.365545+00:00,HIGH,content_major,100.0,0.5,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-11)
+@@ -0,0 +1 @@
++Access Denied Access Denied You don't have permission to access ""http://www.ssa.gov/policy/docs/microdata/bepuf-2020/index.html"" on this server. Reference #18.2e0ed217.1773219364.943307c3 https://errors.edgesuite.net/18.2e0ed217.1773219364.943307c3",Major content change: 100.0% text altered
+55,ssa-epuf,SSA Earnings Public-Use File,SSA,https://www.ssa.gov/policy/docs/microdata/epuf/index.html,2026-03-11T08:56:14.366035+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-11)
+@@ -0,0 +1 @@
++Access Denied Access Denied You don't have permission to access ""http://www.ssa.gov/policy/docs/microdata/epuf/index.html"" on this server. Reference #18.80ed217.1773219364.ff2bd681 https://errors.edgesuite.net/18.80ed217.1773219364.ff2bd681",Major content change: 100.0% text altered
+56,ssa-ssi-microdata,SSA SSI Public-Use Microdata File,SSA,https://www.ssa.gov/policy/docs/microdata/ssr/index.html,2026-03-11T08:56:14.366546+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-11)
+@@ -0,0 +1 @@
++Access Denied Access Denied You don't have permission to access ""http://www.ssa.gov/policy/docs/microdata/ssr/index.html"" on this server. Reference #18.2e0ed217.1773219364.943307cd https://errors.edgesuite.net/18.2e0ed217.1773219364.943307cd",Major content change: 100.0% text altered
+57,ssa-disability-insurance-stats,SSA SSDI Annual Statistical Report (JSON),SSA,https://www.ssa.gov/policy/docs/statcomps/di_asr/index.json,2026-03-11T08:56:14.367036+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-11)
+@@ -0,0 +1,10 @@
++<HTML><HEAD>
+
++<TITLE>Access Denied</TITLE>
+
++</HEAD><BODY>
+
++<H1>Access Denied</H1>
+
++ 
+
++You don't have permission to access ""http&#58;&#47;&#47;www&#46;ssa&#46;gov&#47;policy&#47;docs&#47;statcomps&#47;di&#95;asr&#47;index&#46;json"" on this server.<P>
+
++Reference&#32;&#35;18&#46;2e0ed217&#46;1773219364&#46;9433083c
+
++<P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;2e0ed217&#46;1773219364&#46;9433083c</P>
+
++</BODY>",Major content change: 100.0% text altered
+58,ssa-ssi-annual-stats,SSA SSI Annual Statistical Report (JSON),SSA,https://www.ssa.gov/policy/docs/statcomps/ssi_asr/index.json,2026-03-11T08:56:14.367567+00:00,HIGH,content_major,100.0,0.5,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-11)
+@@ -0,0 +1,10 @@
++<HTML><HEAD>
+
++<TITLE>Access Denied</TITLE>
+
++</HEAD><BODY>
+
++<H1>Access Denied</H1>
+
++ 
+
++You don't have permission to access ""http&#58;&#47;&#47;www&#46;ssa&#46;gov&#47;policy&#47;docs&#47;statcomps&#47;ssi&#95;asr&#47;index&#46;json"" on this server.<P>
+
++Reference&#32;&#35;18&#46;2e0ed217&#46;1773219364&#46;9433084e
+
++<P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;2e0ed217&#46;1773219364&#46;9433084e</P>
+
++</BODY",Major content change: 100.0% text altered
+59,ssa-open-data-catalog,SSA Open Data Catalog (DKAN API),SSA,https://www.ssa.gov/data/api/1/metastore/schemas/dataset/items?show-reference-ids,2026-03-11T08:56:14.368053+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-11)
+@@ -0,0 +1,10 @@
++<HTML><HEAD>
+
++<TITLE>Access Denied</TITLE>
+
++</HEAD><BODY>
+
++<H1>Access Denied</H1>
+
++ 
+
++You don't have permission to access ""http&#58;&#47;&#47;www&#46;ssa&#46;gov&#47;data&#47;api&#47;1&#47;metastore&#47;schemas&#47;dataset&#47;items&#63;"" on this server.<P>
+
++Reference&#32;&#35;18&#46;2e0ed217&#46;1773219364&#46;94330840
+
++<P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;2e0ed217&#46;1773219364&#46;94330840</P>
+
+",Major content change: 100.0% text altered
+60,ssa-disability-benefits,SSA Sitemap (proxy for page availability),SSA,https://www.ssa.gov/sitemap.xml,2026-03-11T08:56:14.368530+00:00,HIGH,content_major,100.0,0.5,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-11)
+@@ -0,0 +1 @@
++Access Denied Access Denied You don't have permission to access ""http://www.ssa.gov/sitemap.xml"" on this server. Reference #18.80ed217.1773219364.ff2bd6ca https://errors.edgesuite.net/18.80ed217.1773219364.ff2bd6ca",Major content change: 100.0% text altered
+61,ssa-bluebook-listings,SSA Blue Book Listing of Impairments,SSA,https://www.ssa.gov/disability/professionals/bluebook/listing-impairments.htm,2026-03-11T08:56:14.369017+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-11)
+@@ -0,0 +1 @@
++Access Denied Access Denied You don't have permission to access ""http://www.ssa.gov/disability/professionals/bluebook/listing-impairments.htm"" on this server. Reference #18.2e0ed217.1773219364.94330847 https://errors.edgesuite.net/18.2e0ed217.1773219364.94330847",Major content change: 100.0% text altered
+62,census-disability-tables,Census Bureau Disability Data Tables,Census,https://www.census.gov/topics/health/disability/data/tables.html,2026-03-11T08:56:14.369735+00:00,HIGH,content_major,100.0,0.1,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-11)
+@@ -0,0 +1 @@
++Disability Data Tables Disability Data Tables Skip Navigation Within Data Disability Data Tables Tables containing disability estimates from the American Community Survey (ACS) are available on data.census.gov . Many Tables available on www.census.gov are downloadable in XLS, CSV, and PDF file formats. Tables available in data.census.gov can be bookmarked/saved, printed and downloaded. The sources of the data published on census.gov a",Major content change: 100.0% text altered
+63,census-disability-topic,Census Bureau Disability Topic Page,Census,https://www.census.gov/topics/health/disability.html,2026-03-11T08:56:14.370285+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-11)
+@@ -0,0 +1 @@
++Disability Disability Skip Navigation Within Disability Disability The Census Bureau collects data on disability primarily through the American Community Survey (ACS) and the Survey of Income and Program Participation (SIPP). Featured Guidance for Disability Data Users Learn about subjects covered by the data and which data tool to use. Find out about handbooks, data users groups, and related topics. Disability Library Online collecti",Major content change: 100.0% text altered
+64,census-sipp-disability,Census SIPP Datasets,Census,https://www.census.gov/programs-surveys/sipp/data/datasets.html,2026-03-11T08:56:14.370977+00:00,HIGH,content_major,100.0,0.0,62,62,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-11)
+@@ -0,0 +1 @@
++Survey of Income and Program Participation Datasets Survey of Income and Program Participation Datasets Skip Navigation Within Data Survey of Income and Program Participation Datasets Access SIPP data by year (2018-2024) or panel/wave (1984-2014) in the tabbed lists below. For SIPP data related questions, please visit the Contact Us page. 2024 2023 2022 2021 2020 More 2019 2018 2014 2008 2004 2001 1996 1993 1992 1991 1990 1989 1988 19",Major content change: 100.0% text altered
+65,nichd-disability-research,NICHD Disability Research,NIH,https://www.nichd.nih.gov/research/supported/disability,2026-03-11T08:56:14.371521+00:00,CRITICAL,http_error,0.0,0.0,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-11)
+@@ -0,0 +1 @@
++Page Not Found | NICHD - Eunice Kennedy Shriver National Institute of Child Health and Human Development Skip to main content Breadcrumb Share Facebook X Linkedin Instagram Copy/Paste Link Copy Link Email Print Page Not Found You entered an invalid URL or are trying to access a web page that no longer exists on the NICHD website. Please check the URL. You may want to use the “back” button for your browser to return to the previous pag",HTTP 404 — page removed or inaccessible
+66,nih-nidcd-data,NIH NIDCD Hearing/Disability Quick Statistics,NIH,https://www.nidcd.nih.gov/health/statistics/quick-statistics-hearing,2026-03-11T08:56:14.933728+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-11)
+@@ -0,0 +1 @@
++Quick Statistics About Hearing, Balance, & Dizziness | NIDCD Skip to main content Official websites use .gov A .gov website belongs to an official government organization in the United States. Secure .gov websites use HTTPS A lock ( ) or https:// means you've safely connected to the .gov website. Share sensitive information only on official, secure websites. Quick Statistics About Hearing, Balance, & Dizziness Hearing About 2 to 3 out",Major content change: 100.0% text altered
+67,nci-data-portal,National Core Indicators Data Files,ACL,https://www.nationalcoreindicators.org/resources/data/,2026-03-11T08:56:14.934800+00:00,CRITICAL,external_redirect,0.0,0.0,84,84,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-11)
+@@ -0,0 +1 @@
++Resources | National Core Indicators National Core Indicators State Login Login » Username Password Forgot Password Old Homepage About Overview Indicators Mission History Staff NCI States Alabama Alaska Arizona Arkansas California Colorado Connecticut Delaware Florida Georgia Hawaii Idaho Illinois Indiana Kansas Kentucky Louisiana Maine Maryland Massachusetts Michigan Minnesota Mississippi Missouri Montana Nebraska Nevada New Hampshir",Redirected to non-.gov: https://legacy.nationalcoreindicators.org/resources/data
+68,dol-odep-statistics,DOL ODEP Disability Statistics,DOL,https://www.dol.gov/agencies/odep/research-evaluation/statistics,2026-03-11T08:56:21.207283+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-11)
+@@ -0,0 +1 @@
++Disability Employment Statistics | U.S. Department of Labor Skip to main content",Major content change: 100.0% text altered
+69,bls-disability-data-tables,BLS Disability Employment Data Tables,BLS,https://www.bls.gov/news.release/disabl.nr0.htm,2026-03-11T08:56:21.207899+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-11)
+@@ -0,0 +1 @@
++Access Denied Bureau of Labor Statistics Access Denied The BLS is committed to providing data promptly and according to established schedules. Automated retrieval programs (commonly called ""robots"" or ""bots"") can cause delays and interfere with other customers' timely access to information. Therefore, bot activity that doesn't conform to BLS usage policy is prohibited. We apologize for any inconvenience. If you believe we have made an",Major content change: 100.0% text altered
+70,bls-disability-flat-files,BLS Labor Force Statistics Flat Files (includes disability series),BLS,https://download.bls.gov/pub/time.series/ln/,2026-03-11T08:56:21.208444+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-11)
+@@ -0,0 +1 @@
++Access Denied Bureau of Labor Statistics Access Denied The BLS is committed to providing data promptly and according to established schedules. Automated retrieval programs (commonly called ""robots"" or ""bots"") can cause delays and interfere with other customers' timely access to information. Therefore, bot activity that doesn't conform to BLS usage policy is prohibited. We apologize for any inconvenience. If you believe we have made an",Major content change: 100.0% text altered
+71,askjan-home,Job Accommodation Network Homepage,JAN,https://askjan.org/,2026-03-11T08:56:21.208999+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-11)
+@@ -0,0 +1 @@
++JAN - Job Accommodation Network Skip to main navigation Skip to search Skip to content Open Search Close Search Search the site: Click to Search Contact Open Close Employers Individuals Toolkit A to Z Situations & Solutions Finder MyJAN Publications Training About JAN Search the site: Search Information By Role Toolkit A to Z of Disabilities & Accommodations ADA Library Situations & Solutions Finder MyJAN Publications Training About J",Major content change: 100.0% text altered
+72,askjan-a-to-z,JAN A-to-Z Disability Index,JAN,https://askjan.org/a-to-z.cfm,2026-03-11T08:56:21.209846+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-11)
+@@ -0,0 +1 @@
++A to Z of Disabilities and Accommodations Close Menu Close A to Z of Disabilities and Accommodations home If you are looking for information on job accommodations, the Americans with Disabilities Act or Rehabilitation Act, or topics related to disability employment, see the listings below for various topics covered by JAN. Listen JAN provides the following A to Z listings by disability, topic, and limitation. This information is desig",Major content change: 100.0% text altered
+73,ed-idea-data,IDEA Data Center,ED,https://sites.ed.gov/idea/data/,2026-03-11T08:56:21.210679+00:00,HIGH,content_major,100.0,0.0,3,3,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-11)
+@@ -0,0 +1 @@
++Data - Individuals with Disabilities Education Act Skip to content Official websites use .gov A .gov website belongs to an official government organization in the United States. Secure .gov websites use HTTPS A lock ( ) or https:// means you’ve safely connected to the .gov website. Share sensitive information only on official, secure websites. Home » Data A A A The Individuals with Disabilities Education Act (IDEA) requires the U.S. D",Major content change: 100.0% text altered
+74,ed-disability-page,ED Office of Special Education Programs,ED,https://www.ed.gov/about/offices/list/osers/osep/index.html,2026-03-11T08:56:21.211516+00:00,HIGH,gov_redirect,100.0,0.0,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-11)
+@@ -0,0 +1 @@
++Office of Special Education Programs (OSEP) | U.S. Department of Education Skip to main content Official websites use .gov A .gov website belongs to an official government organization in the United States. Secure .gov websites use HTTPS A lock ( ) or https:// means you’ve safely connected to the .gov website. Share sensitive information only on official, secure websites. Office of Special Education Programs (OSEP) The Office of Speci",Page now redirects within .gov: https://www.ed.gov/about/ed-offices/osers/osep
+75,hhs-disability-page,HHS Disability Topic Page,HHS,https://www.hhs.gov/programs/topic-sites/disability/index.html,2026-03-11T08:56:21.212600+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-11)
+@@ -0,0 +1 @@
++Access Denied Access Denied You don't have permission to access ""http://www.hhs.gov/programs/topic-sites/disability/index.html"" on this server. Reference #18.680ed217.1773219370.775df9d7 https://errors.edgesuite.net/18.680ed217.1773219370.775df9d7",Major content change: 100.0% text altered
+76,hhs-section504,HHS Section 504 Civil Rights (Disability),HHS,https://www.hhs.gov/civil-rights/for-individuals/disability/index.html,2026-03-11T08:56:21.213065+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-11)
+@@ -0,0 +1 @@
++Access Denied Access Denied You don't have permission to access ""http://www.hhs.gov/civil-rights/for-individuals/disability/index.html"" on this server. Reference #18.680ed217.1773219370.775df9e3 https://errors.edgesuite.net/18.680ed217.1773219370.775df9e3",Major content change: 100.0% text altered
+77,regulations-ada-rulemakings,Regulations.gov ADA Rulemakings,Regulations.gov,https://www.regulations.gov/search?filter=ADA,2026-03-11T08:56:21.213581+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-11)
+@@ -0,0 +1 @@
++ERROR: The request could not be satisfied 403 ERROR The request could not be satisfied. Request blocked. We can't connect to the server for this app or website at this time. There might be too much traffic or a configuration error. Try again later, or contact the app or website owner. If you provide content to customers through CloudFront, you can find steps to troubleshoot and help prevent this error by reviewing the CloudFront docum",Major content change: 100.0% text altered
+78,regulations-section504,Regulations.gov Section 504 Rulemakings,Regulations.gov,https://www.regulations.gov/search?filter=section+504,2026-03-11T08:56:21.214045+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-11)
+@@ -0,0 +1 @@
++ERROR: The request could not be satisfied 403 ERROR The request could not be satisfied. Request blocked. We can't connect to the server for this app or website at this time. There might be too much traffic or a configuration error. Try again later, or contact the app or website owner. If you provide content to customers through CloudFront, you can find steps to troubleshoot and help prevent this error by reviewing the CloudFront docum",Major content change: 100.0% text altered
+79,datagov-disability-ckan,data.gov CKAN API — Disability Dataset Catalog,data.gov,https://catalog.data.gov/api/3/action/package_search?q=disability&rows=100&sort=metadata_modified+desc,2026-03-11T08:56:21.214684+00:00,HIGH,content_major,100.0,100.0,,3,0.000,,,"--- before (2026-03-10)
++++ after (2026-03-11)
+@@ -0,0 +1 @@
++{""help"": ""https://catalog.data.gov/api/3/action/help_show?name=package_search"", ""success"": true, ""result"": {""count"": 1009, ""facets"": {}, ""results"": [{""author"": null, ""author_email"": null, ""creator_user_id"": ""1ecd1fb1-1be6-46bb-b90d-07a0762ed104"", ""id"": ""b77ffd85-dbed-4f11-87ea-9cf447709dd8"", ""isopen"": true, ""license_id"": ""cc-by"", ""license_title"": ""Creative Commons Attribution"", ""license_url"": ""http://www.opendefinition.org/licenses/cc",Major content change: 100.0% text altered
