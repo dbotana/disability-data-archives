@@ -12382,3 +12382,303 @@ change_id,target_id,target_name,target_agency,target_url,detected_at,severity,ch
 
 +</HTML>
 ",Major content change: 100.0% text altered
+1364,ssa-press-releases,SSA Press Releases RSS Feed,SSA,https://www.ssa.gov/rss/mr.xml,2026-04-21T09:48:19.739461+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-04-20)
++++ after (2026-04-21)
+@@ -0,0 +1 @@
++Access Denied Access Denied You don't have permission to access ""http://www.ssa.gov/rss/mr.xml"" on this server. Reference #18.9794d817.1776764843.8b8970a4 https://errors.edgesuite.net/18.9794d817.1776764843.8b8970a4",Major content change: 100.0% text altered
+1365,ssa-public-use-data-index,SSA Public-Use Data Files (DKAN Catalog),SSA,https://www.ssa.gov/data/api/1/metastore/schemas/dataset/items?show-reference-ids,2026-04-21T09:48:19.740074+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-04-20)
++++ after (2026-04-21)
+@@ -0,0 +1,10 @@
++<HTML><HEAD>
+
++<TITLE>Access Denied</TITLE>
+
++</HEAD><BODY>
+
++<H1>Access Denied</H1>
+
++ 
+
++You don't have permission to access ""http&#58;&#47;&#47;www&#46;ssa&#46;gov&#47;data&#47;api&#47;1&#47;metastore&#47;schemas&#47;dataset&#47;items&#63;"" on this server.<P>
+
++Reference&#32;&#35;18&#46;9994d817&#46;1776764843&#46;8eade0ce
+
++<P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;9994d817&#46;1776764843&#46;8eade0ce</P>
+
+",Major content change: 100.0% text altered
+1366,ssa-bepuf-2020,SSA Benefits & Earnings Public-Use File 2020 (DKAN),SSA,https://www.ssa.gov/data/api/1/dataset/bepuf-2020,2026-04-21T09:48:19.740550+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-04-20)
++++ after (2026-04-21)
+@@ -0,0 +1,10 @@
++<HTML><HEAD>
+
++<TITLE>Access Denied</TITLE>
+
++</HEAD><BODY>
+
++<H1>Access Denied</H1>
+
++ 
+
++You don't have permission to access ""http&#58;&#47;&#47;www&#46;ssa&#46;gov&#47;data&#47;api&#47;1&#47;dataset&#47;bepuf&#45;2020"" on this server.<P>
+
++Reference&#32;&#35;18&#46;9994d817&#46;1776764843&#46;8eade0d5
+
++<P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;9994d817&#46;1776764843&#46;8eade0d5</P>
+
++</BODY>
+
++</HTML>
+",Major content change: 100.0% text altered
+1367,ssa-epuf,SSA Earnings Public-Use File (DKAN),SSA,https://www.ssa.gov/data/api/1/dataset/epuf,2026-04-21T09:48:19.741011+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-04-20)
++++ after (2026-04-21)
+@@ -0,0 +1,10 @@
++<HTML><HEAD>
+
++<TITLE>Access Denied</TITLE>
+
++</HEAD><BODY>
+
++<H1>Access Denied</H1>
+
++ 
+
++You don't have permission to access ""http&#58;&#47;&#47;www&#46;ssa&#46;gov&#47;data&#47;api&#47;1&#47;dataset&#47;epuf"" on this server.<P>
+
++Reference&#32;&#35;18&#46;9994d817&#46;1776764843&#46;8eade0d2
+
++<P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;9994d817&#46;1776764843&#46;8eade0d2</P>
+
++</BODY>
+
++</HTML>
+",Major content change: 100.0% text altered
+1368,ssa-ssi-microdata,SSA SSI Public-Use Microdata File (DKAN),SSA,https://www.ssa.gov/data/api/1/dataset/ssr,2026-04-21T09:48:19.741511+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-04-20)
++++ after (2026-04-21)
+@@ -0,0 +1,10 @@
++<HTML><HEAD>
+
++<TITLE>Access Denied</TITLE>
+
++</HEAD><BODY>
+
++<H1>Access Denied</H1>
+
++ 
+
++You don't have permission to access ""http&#58;&#47;&#47;www&#46;ssa&#46;gov&#47;data&#47;api&#47;1&#47;dataset&#47;ssr"" on this server.<P>
+
++Reference&#32;&#35;18&#46;9994d817&#46;1776764843&#46;8eade0d4
+
++<P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;9994d817&#46;1776764843&#46;8eade0d4</P>
+
++</BODY>
+
++</HTML>
+",Major content change: 100.0% text altered
+1369,ssa-disability-insurance-stats,SSA SSDI Annual Statistical Report (DKAN),SSA,https://www.ssa.gov/data/api/1/dataset/di_asr,2026-04-21T09:48:19.741978+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-04-20)
++++ after (2026-04-21)
+@@ -0,0 +1,10 @@
++<HTML><HEAD>
+
++<TITLE>Access Denied</TITLE>
+
++</HEAD><BODY>
+
++<H1>Access Denied</H1>
+
++ 
+
++You don't have permission to access ""http&#58;&#47;&#47;www&#46;ssa&#46;gov&#47;data&#47;api&#47;1&#47;dataset&#47;di&#95;asr"" on this server.<P>
+
++Reference&#32;&#35;18&#46;9794d817&#46;1776764843&#46;8b8970b9
+
++<P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;9794d817&#46;1776764843&#46;8b8970b9</P>
+
++</BODY>
+
++</HTML>
+",Major content change: 100.0% text altered
+1370,ssa-ssi-annual-stats,SSA SSI Annual Statistical Report (DKAN),SSA,https://www.ssa.gov/data/api/1/dataset/ssi_asr,2026-04-21T09:48:19.742482+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-04-20)
++++ after (2026-04-21)
+@@ -0,0 +1,10 @@
++<HTML><HEAD>
+
++<TITLE>Access Denied</TITLE>
+
++</HEAD><BODY>
+
++<H1>Access Denied</H1>
+
++ 
+
++You don't have permission to access ""http&#58;&#47;&#47;www&#46;ssa&#46;gov&#47;data&#47;api&#47;1&#47;dataset&#47;ssi&#95;asr"" on this server.<P>
+
++Reference&#32;&#35;18&#46;9794d817&#46;1776764843&#46;8b8970bd
+
++<P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;9794d817&#46;1776764843&#46;8b8970bd</P>
+
++</BODY>
+
++</HTML>
+",Major content change: 100.0% text altered
+1371,ssa-open-data-catalog,SSA Open Data Catalog (DKAN API),SSA,https://www.ssa.gov/data/api/1/metastore/schemas/dataset/items?show-reference-ids,2026-04-21T09:48:19.742947+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-04-20)
++++ after (2026-04-21)
+@@ -0,0 +1,10 @@
++<HTML><HEAD>
+
++<TITLE>Access Denied</TITLE>
+
++</HEAD><BODY>
+
++<H1>Access Denied</H1>
+
++ 
+
++You don't have permission to access ""http&#58;&#47;&#47;www&#46;ssa&#46;gov&#47;data&#47;api&#47;1&#47;metastore&#47;schemas&#47;dataset&#47;items&#63;"" on this server.<P>
+
++Reference&#32;&#35;18&#46;9994d817&#46;1776764843&#46;8eade0f4
+
++<P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;9994d817&#46;1776764843&#46;8eade0f4</P>
+
+",Major content change: 100.0% text altered
+1372,ssa-disability-benefits,SSA Sitemap (proxy for page availability),SSA,https://www.ssa.gov/sitemap.xml,2026-04-21T09:48:27.979607+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-04-20)
++++ after (2026-04-21)
+@@ -0,0 +1 @@
++[CDX proxy] digest= ts=20081018142859",Major content change: 100.0% text altered
+1373,cdc-soda-disability-catalog,CDC Open Data — Disability Dataset Catalog (SODA API),CDC,https://data.cdc.gov/api/views/metadata/v1?limit=100&searchContext=disability,2026-04-21T09:49:23.556687+00:00,HIGH,content_major,100.0,0.0,100,100,0.000,,,"--- before (2026-04-20)
++++ after (2026-04-21)
+@@ -0,0 +1,1497 @@
++[ {
+
++  ""id"" : ""nf35-ec5c"",
+
++  ""name"" : ""National Ambulatory Medical Care Survey 2018-2019, public-use data"",
+
++  ""attribution"" : ""NCHS/DHCS"",
+
++  ""attributionLink"" : null,
+
++  ""category"" : ""National Center for Health Statistics"",
+
++  ""createdAt"" : ""2026-04-17T17:59:38+0000"",
+
++  ""dataUpdatedAt"" : ""2026-04-17T17:59:38+0000"",
+
++  ""dataUri"" : ""https://data.cdc.gov/resource/nf35-ec5c"",
+
++  ""description"" : ""The National Ambulatory M",Major content change: 100.0% text altered
+1374,census-disability-tables,Census Bureau Disability Data Tables,Census,https://www.census.gov/topics/health/disability/data/tables.html,2026-04-21T09:49:23.559588+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-04-20)
++++ after (2026-04-21)
+@@ -0,0 +1 @@
++Disability Data Tables Disability Data Tables Skip Navigation Within Data Disability Data Tables Tables containing disability estimates from the American Community Survey (ACS) are available on data.census.gov . Many Tables available on www.census.gov are downloadable in XLS, CSV, and PDF file formats. Tables available in data.census.gov can be bookmarked/saved, printed and downloaded. The sources of the data published on census.gov a",Major content change: 100.0% text altered
+1375,census-disability-topic,Census Bureau Disability Topic Page,Census,https://www.census.gov/topics/health/disability.html,2026-04-21T09:49:23.560052+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-04-20)
++++ after (2026-04-21)
+@@ -0,0 +1 @@
++Disability Disability Skip Navigation Within Disability Disability The Census Bureau collects data on disability primarily through the American Community Survey (ACS) and the Survey of Income and Program Participation (SIPP). Featured Guidance for Disability Data Users Learn about subjects covered by the data and which data tool to use. Find out about handbooks, data users groups, and related topics. Disability Library Online collecti",Major content change: 100.0% text altered
+1376,census-sipp-disability,Census SIPP Datasets,Census,https://www.census.gov/programs-surveys/sipp/data/datasets.html,2026-04-21T09:49:23.560701+00:00,HIGH,content_major,100.0,0.0,62,62,0.000,,,"--- before (2026-04-20)
++++ after (2026-04-21)
+@@ -0,0 +1 @@
++Survey of Income and Program Participation Datasets Survey of Income and Program Participation Datasets Skip Navigation Within Data Survey of Income and Program Participation Datasets Access SIPP data by year (2018-2024) or panel/wave (1984-2014) in the tabbed lists below. For SIPP data related questions, please visit the Contact Us page. 2024 2023 2022 2021 2020 More 2019 2018 2014 2008 2004 2001 1996 1993 1992 1991 1990 1989 1988 19",Major content change: 100.0% text altered
+1377,nichd-disability-research,NICHD Disability Research (tombstone — 404 as of 2026-03),NIH,https://www.nichd.nih.gov/research/supported/disability,2026-04-21T09:49:23.561191+00:00,CRITICAL,http_error,0.0,0.0,,,0.000,,,"--- before (2026-04-20)
++++ after (2026-04-21)
+@@ -0,0 +1 @@
++Page Not Found | NICHD - Eunice Kennedy Shriver National Institute of Child Health and Human Development Skip to main content Breadcrumb Share Facebook X Linkedin Instagram Copy/Paste Link Copy Link Email Print Page Not Found You entered an invalid URL or are trying to access a web page that no longer exists on the NICHD website. Please check the URL. You may want to use the “back” button for your browser to return to the previous pag",HTTP 404 — page removed or inaccessible
+1378,nichd-research-programs,NICHD Research Programs,NIH,https://www.nichd.nih.gov/research/supported,2026-04-21T09:49:23.894023+00:00,CRITICAL,http_error,0.0,0.0,830,830,0.000,,,"--- before (2026-04-20)
++++ after (2026-04-21)
+@@ -0,0 +1 @@
++Page Not Found | NICHD - Eunice Kennedy Shriver National Institute of Child Health and Human Development Skip to main content Breadcrumb Share Facebook X Linkedin Instagram Copy/Paste Link Copy Link Email Print Page Not Found You entered an invalid URL or are trying to access a web page that no longer exists on the NICHD website. Please check the URL. You may want to use the “back” button for your browser to return to the previous pag",HTTP 404 — page removed or inaccessible
+1379,nih-nidcd-data,NIH NIDCD Hearing/Disability Quick Statistics,NIH,https://www.nidcd.nih.gov/health/statistics/quick-statistics-hearing,2026-04-21T09:49:30.103511+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-04-20)
++++ after (2026-04-21)
+@@ -0,0 +1 @@
++Quick Statistics About Hearing, Balance, & Dizziness | NIDCD Skip to main content Official websites use .gov A .gov website belongs to an official government organization in the United States. Secure .gov websites use HTTPS A lock ( ) or https:// means you've safely connected to the .gov website. Share sensitive information only on official, secure websites. Quick Statistics About Hearing, Balance, & Dizziness Hearing About 2 to 3 out",Major content change: 100.0% text altered
+1380,acl-data-research,ACL Aging and Disability Data and Research,ACL,https://acl.gov/aging-and-disability-in-america/data-and-research,2026-04-21T09:49:30.104326+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-04-20)
++++ after (2026-04-21)
+@@ -0,0 +1 @@
++Data and Research | ACL Administration for Community Living Documents on this website are being reviewed and updated as necessary to comply with President Trump's executive orders. Official websites use .gov A .gov website belongs to an official government organization in the United States. Secure .gov websites use HTTPS A lock ( ) or https:// means you’ve safely connected to the .gov website. Share sensitive information only on offic",Major content change: 100.0% text altered
+1381,acl-programs,ACL Programs Directory,ACL,https://acl.gov/programs,2026-04-21T09:49:30.104913+00:00,HIGH,content_major,100.0,0.0,273,273,0.000,,,"--- before (2026-04-20)
++++ after (2026-04-21)
+@@ -0,0 +1 @@
++Program and Policy Areas | ACL Administration for Community Living Documents on this website are being reviewed and updated as necessary to comply with President Trump's executive orders. Official websites use .gov A .gov website belongs to an official government organization in the United States. Secure .gov websites use HTTPS A lock ( ) or https:// means you’ve safely connected to the .gov website. Share sensitive information only o",Major content change: 100.0% text altered
+1382,nci-data-portal,National Core Indicators Data Files,ACL,https://www.nationalcoreindicators.org/resources/data/,2026-04-21T09:49:30.105618+00:00,CRITICAL,external_redirect,0.0,0.0,84,84,0.000,,,"--- before (2026-04-20)
++++ after (2026-04-21)
+@@ -0,0 +1 @@
++Resources | National Core Indicators National Core Indicators State Login Login » Username Password Forgot Password Old Homepage About Overview Indicators Mission History Staff NCI States Alabama Alaska Arizona Arkansas California Colorado Connecticut Delaware Florida Georgia Hawaii Idaho Illinois Indiana Kansas Kentucky Louisiana Maine Maryland Massachusetts Michigan Minnesota Mississippi Missouri Montana Nebraska Nevada New Hampshir",Redirected to non-.gov: https://legacy.nationalcoreindicators.org/resources/data
+1383,acl-home,ACL Homepage,ACL,https://acl.gov/,2026-04-21T09:49:36.304332+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-04-20)
++++ after (2026-04-21)
+@@ -0,0 +1 @@
++Home Page | ACL Administration for Community Living Documents on this website are being reviewed and updated as necessary to comply with President Trump's executive orders. Official websites use .gov A .gov website belongs to an official government organization in the United States. Secure .gov websites use HTTPS A lock ( ) or https:// means you’ve safely connected to the .gov website. Share sensitive information only on official, sec",Major content change: 100.0% text altered
+1384,dol-odep-statistics,DOL ODEP Disability Statistics,DOL,https://www.dol.gov/agencies/odep/research-evaluation/statistics,2026-04-21T09:49:36.304967+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-04-20)
++++ after (2026-04-21)
+@@ -0,0 +1 @@
++Disability Employment Statistics | U.S. Department of Labor Skip to main content",Major content change: 100.0% text altered
+1385,bls-disability-release-toc,BLS Disability Employment News Release (TOC),BLS,https://www.bls.gov/news.release/disabl.toc.htm,2026-04-21T09:49:44.859160+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-04-20)
++++ after (2026-04-21)
+@@ -0,0 +1 @@
++[CDX proxy] digest= ts=20100831112452",Major content change: 100.0% text altered
+1386,bls-disability-flat-files,BLS Employment Level — With Disability (CPS Series LNU02074593),BLS,https://api.bls.gov/publicAPI/v2/timeseries/data/LNU02074593?startyear=2023&endyear=2025,2026-04-21T09:49:59.728352+00:00,HIGH,content_major,100.0,0.0,4,4,0.000,,,"--- before (2026-04-20)
++++ after (2026-04-21)
+@@ -0,0 +1,4 @@
++{""status"":""REQUEST_SUCCEEDED"",""responseTime"":100,""message"":[],""Results"":{
+
++""series"":
+
++[{""seriesID"":""LNU02074593"",""data"":[{""year"":""2025"",""period"":""M12"",""periodName"":""December"",""value"":""155260"",""footnotes"":[{}]},{""year"":""2025"",""period"":""M11"",""periodName"":""November"",""value"":""155143"",""footnotes"":[{}]},{""year"":""2025"",""period"":""M10"",""periodName"":""October"",""value"":""-"",""footnotes"":[{""code"":""9"",""text"":""Data unavailable due to the 2025 laps",Major content change: 100.0% text altered
+1387,askjan-home,Job Accommodation Network Homepage,JAN,https://askjan.org/,2026-04-21T09:49:59.728962+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-04-20)
++++ after (2026-04-21)
+@@ -0,0 +1 @@
++JAN - Job Accommodation Network Skip to main navigation Skip to search Skip to content Open Search Close Search Search the site: Click to Search Contact Open Close Employers Individuals Toolkit A to Z Situations & Solutions Finder MyJAN Publications Training About JAN Search the site: Search Information By Role Toolkit A to Z of Disabilities & Accommodations ADA Library Situations & Solutions Finder MyJAN Publications Training About J",Major content change: 100.0% text altered
+1388,askjan-a-to-z,JAN A-to-Z Disability Index,JAN,https://askjan.org/a-to-z.cfm,2026-04-21T09:49:59.729761+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-04-20)
++++ after (2026-04-21)
+@@ -0,0 +1 @@
++A to Z of Disabilities and Accommodations Close Menu Close A to Z of Disabilities and Accommodations home If you are looking for information on job accommodations, the Americans with Disabilities Act or Rehabilitation Act, or topics related to disability employment, see the listings below for various topics covered by JAN. Listen JAN provides the following A to Z listings by disability, topic, and limitation. This information is desig",Major content change: 100.0% text altered
+1389,ofccp-section503,OFCCP Section 503 Disability Page,DOL,https://www.dol.gov/agencies/ofccp/disability,2026-04-21T09:49:59.730479+00:00,CRITICAL,http_error,0.0,0.0,,,0.000,,,"--- before (2026-04-20)
++++ after (2026-04-21)
+@@ -0,0 +1 @@
++Page Not Found | U.S. Department of Labor Skip to main content",HTTP 404 — page removed or inaccessible
+1390,ed-idea-data,IDEA Data Center,ED,https://sites.ed.gov/idea/data/,2026-04-21T09:49:59.932362+00:00,HIGH,content_major,100.0,0.0,3,3,0.000,,,"--- before (2026-04-20)
++++ after (2026-04-21)
+@@ -0,0 +1 @@
++Data - Individuals with Disabilities Education Act Skip to content Official websites use .gov A .gov website belongs to an official government organization in the United States. Secure .gov websites use HTTPS A lock ( ) or https:// means you’ve safely connected to the .gov website. Share sensitive information only on official, secure websites. Home » Data A A A The Individuals with Disabilities Education Act (IDEA) requires the U.S. D",Major content change: 100.0% text altered
+1391,ed-disability-page,ED Office of Special Education Programs,ED,https://www.ed.gov/about/offices/list/osers/osep/index.html,2026-04-21T09:49:59.933147+00:00,HIGH,gov_redirect,100.0,0.0,,,0.000,,,"--- before (2026-04-20)
++++ after (2026-04-21)
+@@ -0,0 +1 @@
++Office of Special Education Programs (OSEP) | U.S. Department of Education Skip to main content Official websites use .gov A .gov website belongs to an official government organization in the United States. Secure .gov websites use HTTPS A lock ( ) or https:// means you’ve safely connected to the .gov website. Share sensitive information only on official, secure websites. Office of Special Education Programs (OSEP) The Office of Speci",Page now redirects within .gov: https://www.ed.gov/about/ed-offices/osers/osep
+1392,hhs-disability-page,HHS Disability Topic Page,HHS,https://www.hhs.gov/programs/topic-sites/disability/index.html,2026-04-21T09:50:24.877313+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-04-20)
++++ after (2026-04-21)
+@@ -0,0 +1 @@
++Access Denied Access Denied You don't have permission to access ""http://www.hhs.gov/programs/topic-sites/disability/index.html"" on this server. Reference #18.615ed617.1776764848.4475aaf9 https://errors.edgesuite.net/18.615ed617.1776764848.4475aaf9",Major content change: 100.0% text altered
+1393,hhs-open-data-catalog,HHS Open Data Catalog (data.json),HHS,https://www.hhs.gov/data.json,2026-04-21T09:50:27.614752+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-04-20)
++++ after (2026-04-21)
+@@ -0,0 +1,10 @@
++<HTML><HEAD>
+
++<TITLE>Access Denied</TITLE>
+
++</HEAD><BODY>
+
++<H1>Access Denied</H1>
+
++ 
+
++You don't have permission to access ""http&#58;&#47;&#47;www&#46;hhs&#46;gov&#47;data&#46;json"" on this server.<P>
+
++Reference&#32;&#35;18&#46;615ed617&#46;1776764848&#46;4475ab08
+
++<P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;615ed617&#46;1776764848&#46;4475ab08</P>
+
++</BODY>
+
++</HTML>
+",Major content change: 100.0% text altered
+1394,gsa-section508,Section508.gov (GSA IT Accessibility Program),GSA,https://www.section508.gov/,2026-04-21T09:50:27.615554+00:00,HIGH,content_major,100.0,0.0,,,0.000,,,"--- before (2026-04-20)
++++ after (2026-04-21)
+@@ -0,0 +1 @@
++Home | Section508.gov Skip to main content Official websites use .gov A .gov website belongs to an official government organization in the United States. Secure .gov websites use HTTPS A lock ( ) or https:// means you’ve safely connected to the .gov website. Share sensitive information only on official, secure websites. ˄ Top Section 508 of the Rehabilitation Act FY 2025 Governmentwide Section 508 Assessment The General Services Admin",Major content change: 100.0% text altered
+1395,cms-medicaid-disability,CMS Medicaid Long-Term Services and Supports,CMS,https://www.medicaid.gov/medicaid/long-term-services-supports/index.html,2026-04-21T09:50:27.616311+00:00,HIGH,gov_redirect,100.0,0.0,,,0.000,,,"--- before (2026-04-20)
++++ after (2026-04-21)
+@@ -0,0 +1 @@
++Long Term Services & Supports | Medicaid Skip to main content Official websites use .gov A .gov website belongs to an official government organization in the United States. Secure .gov websites use HTTPS A lock ( ) or https:// means you’ve safely connected to the .gov website. Share sensitive information only on official, secure websites. Long Term Services & Supports 2020 Total Medicaid Spending Total federal and state Medicaid spend",Page now redirects within .gov: https://www.medicaid.gov/medicaid/long-term-services-supports
+1396,cms-dkan-disability-catalog,CMS Open Data Catalog (data.json),CMS,https://data.cms.gov/data.json,2026-04-21T09:50:27.617078+00:00,HIGH,content_major,100.0,0.5,6,6,0.000,,,"--- before (2026-04-20)
++++ after (2026-04-21)
+@@ -0,0 +1 @@
++{""@context"":""https:\/\/project-open-data.cio.gov\/v1.1\/schema\/catalog.jsonld"",""@id"":""https:\/\/data.cms.gov\/data.json"",""@type"":""dcat:Catalog"",""conformsTo"":""https:\/\/project-open-data.cio.gov\/v1.1\/schema"",""describedBy"":""https:\/\/project-open-data.cio.gov\/v1.1\/schema\/catalog.json"",""dataset"":[{""@type"":""dcat:Dataset"",""accessLevel"":""public"",""accessRights"":""Open"",""accrualPeriodicity"":""R\/P1Y"",""bureauCode"":[""009:38""],""contactPoint""",Major content change: 100.0% text altered
